@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { MouseEvent } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -13,8 +14,7 @@ import {
   Sparkles,
   Inbox
 } from "lucide-react";
-import { Pattern, ModeToggle } from "@/components/ui";
-import { useThemeStore } from "@/store";
+import { Pattern } from "@/components/ui";
 
 // Define interfaces for data types
 interface Message {
@@ -31,10 +31,9 @@ interface User {
 }
 
 export default function Dashboard() {
-  const { theme } = useThemeStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [copied, setCopied] = useState<boolean>(false);
-  
+
   // Mock User Data
   const user: User = {
     username: "anonymous_user",
@@ -49,7 +48,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       setMessages([
         { id: 1, content: "Do you have a crush on anyone right now? 👀", time: "2m ago", isNew: true, color: "bg-red-500" },
         { id: 2, content: "I saw you at the mall today, you looked great!", time: "1h ago", isNew: true, color: "bg-purple-500" },
@@ -57,7 +56,7 @@ export default function Dashboard() {
         { id: 4, content: "Rate our friendship 1-10", time: "5h ago", isNew: false, color: "bg-orange-500" },
         { id: 5, content: "Who is your favorite artist?", time: "1d ago", isNew: false, color: "bg-green-500" },
       ]);
-      
+
       setIsLoading(false);
     };
     fetchData();
@@ -70,8 +69,8 @@ export default function Dashboard() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleShare = async () => {
-    // Type assertion for navigator.share since it might not be in all TS definitions depending on config
+  const handleShare = async (e: MouseEvent) => {
+    e.preventDefault();
     if (navigator.share) {
       try {
         await navigator.share({
@@ -87,10 +86,15 @@ export default function Dashboard() {
     }
   };
 
+  const handleLogout = (e: MouseEvent) => {
+    e.preventDefault();
+    window.location.href = "/";
+  };
+
   return (
     <Pattern>
       <div className="relative z-10 min-h-[100dvh] flex flex-col font-sans text-main">
-        
+
         {/* Header */}
         <header className="w-full p-6 flex justify-between items-center max-w-7xl mx-auto z-20 sticky top-0 bg-background/80 backdrop-blur-md border-b border-line/50">
           <div className="flex items-center gap-3">
@@ -101,15 +105,13 @@ export default function Dashboard() {
               Dashboard
             </span>
           </div>
-          
+
           <div className="flex items-center gap-3">
-            <ModeToggle />
-            <div className="h-6 w-[1px] bg-line mx-1"></div>
             <button className="p-2 rounded-full hover:bg-secondary text-muted hover:text-main transition-colors">
               <Settings size={20} />
             </button>
             <button 
-              onClick={() => window.location.href = "/"}
+              onClick={handleLogout}
               className="p-2 rounded-full hover:bg-red-500/10 text-muted hover:text-red-500 transition-colors"
             >
               <LogOut size={20} />
@@ -118,7 +120,7 @@ export default function Dashboard() {
         </header>
 
         <main className="flex-1 w-full max-w-6xl mx-auto p-4 md:p-8 space-y-8">
-          
+
           {/* Link Section */}
           <motion.section 
             initial={{ y: 20, opacity: 0 }}
@@ -165,7 +167,7 @@ export default function Dashboard() {
                   <Inbox size={24} /> Inbox 
                   <span className="text-xs bg-main text-background px-2 py-0.5 rounded-full">{messages.filter(m => m.isNew).length} new</span>
                 </h3>
-                
+
                 {/* Filter / Sort (Visual Only) */}
                 <select className="bg-transparent text-sm font-medium text-muted border-none outline-none cursor-pointer hover:text-main focus:ring-0">
                   <option>Newest First</option>
