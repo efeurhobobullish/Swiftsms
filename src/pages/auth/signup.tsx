@@ -1,35 +1,56 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
-import { ButtonWithLoader } from "@/components/ui";
+import { motion } from "framer-motion";
+import { 
+  Ghost, 
+  User, 
+  Lock, 
+  ArrowRight, 
+  Eye, 
+  EyeOff,
+  Check
+} from "lucide-react";
+import { Pattern, ButtonWithLoader, ModeToggle } from "@/components/ui";
 import { useThemeStore } from "@/store";
 
 export default function Signup() {
   const { theme } = useThemeStore();
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Form State
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
 
-  const logoPath = theme === "dark" ? "/logo-white.svg" : "/logo-colour.svg";
+  const logoPath = theme === "dark" ? "/logo-white.svg" : "/logo-black.svg";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  // Check for username in URL params (from Home page input)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userParam = params.get("user");
+    if (userParam) {
+      setFormData(prev => ({ ...prev, username: userParam }));
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     
+    // Basic Validation
+    if (!formData.username || !formData.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords don't match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -40,118 +61,154 @@ export default function Signup() {
 
     setIsLoading(true);
 
+    // Simulate API Call
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success("Account created! Please check your email for verification.");
-      window.location.href = "/auth/verify";
+      toast.success("Account created successfully!");
+      // window.location.href = "/dashboard"; // Redirect logic
     } catch (error) {
-      toast.error("Failed to create account. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
-      <div className="w-full max-w-md">
+    <Pattern>
+      <div className="relative z-10 min-h-[100dvh] flex flex-col font-sans text-main">
+        
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="w-16 h-16">
-              <img src={logoPath} alt="GameSquad" className="w-full h-full" />
+        <header className="w-full p-6 flex justify-between items-center max-w-7xl mx-auto z-20">
+          <div 
+            className="flex items-center gap-3 cursor-pointer" 
+            onClick={() => window.location.href = "/"}
+          >
+            <div className="w-10 h-10 flex items-center justify-center bg-main text-background rounded-xl">
+               <Ghost className="w-6 h-6" />
             </div>
+            <span className="text-xl font-bold tracking-tight text-main hidden sm:block">
+              Anonymous
+            </span>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
-            Join GameSquad
-          </h1>
-          <p className="text-muted-foreground">
-            Create your account and start gaming with friends
-          </p>
-        </div>
+          <ModeToggle />
+        </header>
 
-        {/* Signup Form */}
-        <div className="bg-card border border-border rounded-2xl p-6 shadow-lg">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                name="username"
-                placeholder="Choose a username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50"
-              />
+        {/* Main Content */}
+        <main className="flex-1 flex items-center justify-center px-4 py-12">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="w-full max-w-md"
+          >
+            {/* Card */}
+            <div className="bg-background/80 backdrop-blur-xl border border-line p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+              
+              {/* Decorative Gradient Blob */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-purple-500/20 to-orange-500/20 blur-3xl rounded-full pointer-events-none" />
+
+              <div className="text-center mb-8 relative z-10">
+                <h1 className="text-3xl font-bold mb-2 text-main tracking-tight">Claim your link</h1>
+                <p className="text-muted text-sm">
+                  Create an account to start receiving anonymous messages.
+                </p>
+              </div>
+
+              <form onSubmit={handleSignup} className="space-y-5 relative z-10">
+                {/* Username Input */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted ml-1">Username</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted group-focus-within:text-main transition-colors">
+                      <User size={18} />
+                    </div>
+                    <input
+                      type="text"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      placeholder="yourname"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl bg-secondary/30 border border-line focus:border-main focus:bg-background focus:ring-0 text-main placeholder:text-muted/50 transition-all outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Password Input */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted ml-1">Password</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted group-focus-within:text-main transition-colors">
+                      <Lock size={18} />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="••••••••"
+                      className="w-full h-12 pl-11 pr-12 rounded-xl bg-secondary/30 border border-line focus:border-main focus:bg-background focus:ring-0 text-main placeholder:text-muted/50 transition-all outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted hover:text-main transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Confirm Password Input */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted ml-1">Confirm Password</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted group-focus-within:text-main transition-colors">
+                      <Check size={18} />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="••••••••"
+                      className="w-full h-12 pl-11 pr-4 rounded-xl bg-secondary/30 border border-line focus:border-main focus:bg-background focus:ring-0 text-main placeholder:text-muted/50 transition-all outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <ButtonWithLoader
+                    loading={isLoading}
+                    initialText="Create Account"
+                    loadingText="Creating..."
+                    type="submit"
+                    className="w-full h-12 rounded-xl font-bold text-lg bg-main text-background hover:bg-main/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  />
+                </div>
+              </form>
+
+              {/* Footer Links */}
+              <div className="mt-8 text-center text-sm text-muted">
+                <p>
+                  Already have an account?{" "}
+                  <a href="/login" className="text-main font-semibold hover:underline decoration-2 underline-offset-4 cursor-pointer">
+                    Login
+                  </a>
+                </p>
+              </div>
+
             </div>
             
-            <div>
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50"
-              />
-            </div>
-            
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50 pr-12"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground disabled:opacity-50"
-                disabled={isLoading}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            <div>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50"
-              />
-            </div>
-
-            <ButtonWithLoader
-              loading={isLoading}
-              initialText="Create Account"
-              loadingText="Creating Account..."
-              onClick={handleSubmit}
-              className="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium transition-all hover:shadow-lg disabled:opacity-50"
-            />
-          </form>
-
-          <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Already have an account? </span>
-            <Link
-              to="/auth/login"
-              className="text-orange-500 hover:text-orange-600 font-medium"
-            >
-              Sign in
-            </Link>
-          </div>
-        </div>
+            {/* Terms */}
+            <p className="text-center text-xs text-muted/60 mt-6 max-w-xs mx-auto">
+              By signing up, you agree to our Terms of Service and Privacy Policy. 
+              We do not sell your data.
+            </p>
+          </motion.div>
+        </main>
       </div>
-    </div>
+    </Pattern>
   );
 }
+
