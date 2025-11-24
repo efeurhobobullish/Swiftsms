@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Heart, ArrowLeft, Mail, Lock, User, Calendar, Loader2 } from "lucide-react";
 
-export default function SignupPage() {
+export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = (e: React.FormEvent) => {
