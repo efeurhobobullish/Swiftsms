@@ -9,11 +9,7 @@ import {
   Users,
   Swords,
   Trophy,
-  MessageCircle,
-  Gamepad2,
-  Crown,
-  Mic,
-  Shield
+  MessageCircle
 } from "lucide-react";
 import { useThemeStore } from "@/store";
 
