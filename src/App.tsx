@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components/ui";
 import { Home, NotFound } from "@/pages";
 import { Signup, Login, Verify } from "@/pages/auth";
+import { Dashboard } from "@/pages/main";
 
 export default function App() {
   return (
