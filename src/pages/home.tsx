@@ -6,8 +6,7 @@ import {
   MessageCircle, 
   Share2, 
   Heart, 
-  Sparkles, 
-  ArrowRight,
+  Sparkles,
   Ghost
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,7 +20,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
 
   // Dynamic logo based on theme state
-  const logoPath = theme === "dark" ? "/logo-white.svg" : "/logo-black.svg";
+  const logoPath = theme === "dark" ? "/logo-white.svg" : "/logo-colour.svg";
 
   useEffect(() => {
     // Simulate connection check
