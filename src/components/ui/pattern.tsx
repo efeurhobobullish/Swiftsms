@@ -1,30 +1,20 @@
 export default function Pattern({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-[100dvh] w-full bg-background relative overflow-y-scroll">
+    <>
+      {/* Fixed pattern background that stays stationary */}
       <div
-        className="absolute inset-0 z-0 opacity-30"
+        className="fixed inset-0 z-0 pointer-events-none bg-background"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 25% 25%, var(--primary) 2px, transparent 0),
-            radial-gradient(circle at 75% 75%, var(--muted) 2px, transparent 0)
-          `,
-          backgroundSize: "50px 50px, 30px 30px",
-          backgroundPosition: "0 0, 25px 25px",
-        }}
-      />
-      
-      {/* Subtle gradient overlay */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          background: `
-            radial-gradient(ellipse at top right, var(--secondary) 0%, transparent 60%),
-            radial-gradient(ellipse at bottom left, var(--foreground) 0%, transparent 60%)
+            repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px)
           `,
         }}
       />
-
+      {/* Content that scrolls over the fixed pattern */}
       <div className="relative z-10">{children}</div>
-    </div>
+    </>
   );
 }
