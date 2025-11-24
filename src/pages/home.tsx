@@ -1,319 +1,248 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModeToggle from "@/components/ui/mode-toggle";
 import { 
-  Heart, ArrowRight, Users, Sparkles, ShieldCheck, 
-  MessageCircle, Zap, Star, Menu, X, CheckCircle, Apple
+  Heart, ArrowRight, Sparkles, ShieldCheck, 
+  MessageCircle, Star, Smartphone, Menu, X, Check
 } from "lucide-react";
 
 export default function Home() {
+  const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Handle scroll effect for navbar
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-[100dvh] w-full bg-background text-main relative overflow-x-hidden font-sans selection:bg-primary/20">
+    <div className="min-h-[100dvh] w-full bg-background text-main font-sans selection:bg-primary/20 overflow-x-hidden">
       
-      {/* --- 1. Navbar (Responsive) --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-line/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-        <div className="main h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary to-muted rounded-xl center text-white shadow-lg shadow-primary/20">
-              <Heart size={20} fill="currentColor" className="animate-pulse" />
+      {/* --- Ambient Background --- */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[70vw] h-[70vw] bg-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-muted/5 rounded-full blur-[120px]" />
+      </div>
+
+      {/* --- Floating Navbar --- */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
+        <nav className={`
+            w-full max-w-[1200px] rounded-full transition-all duration-500 ease-out border
+            flex items-center justify-between px-6 py-3
+            ${scrolled 
+              ? "bg-background/80 backdrop-blur-xl border-line/50 shadow-sm" 
+              : "bg-transparent border-transparent"
+            }
+        `}>
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
+              <Heart size={16} fill="currentColor" />
             </div>
-            <span className="font-extrabold text-xl tracking-tight">SwiftMatch</span>
+            <span className="font-bold text-lg tracking-tight">SwiftMatch</span>
           </div>
-          
+
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-muted hover:text-primary transition-colors">Features</a>
-            <a href="#stories" className="text-sm font-medium text-muted hover:text-primary transition-colors">Success Stories</a>
-            <a href="#download" className="text-sm font-medium text-muted hover:text-primary transition-colors">Download</a>
-            <div className="w-px h-4 bg-line"></div>
-            <div className="flex items-center gap-4">
-                <ModeToggle />
-                <a href="/login" className="text-sm font-bold hover:text-primary transition-colors">Log in</a>
-                <a href="/signup" className="btn btn-primary rounded-full px-6 text-sm h-10 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all">
-                Join Now
-                </a>
-            </div>
+            <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">Features</a>
+            <a href="#premium" className="text-sm font-medium hover:text-primary transition-colors">Premium</a>
+            <a href="#download" className="text-sm font-medium hover:text-primary transition-colors">Download</a>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="md:hidden p-2 text-main"
-          >
-            {isMenuOpen ? <X /> : <Menu />}
+          {/* Actions */}
+          <div className="hidden md:flex items-center gap-3">
+             <ModeToggle />
+             <a href="/login" className="px-5 py-2 text-sm font-medium hover:bg-secondary rounded-full transition-colors">Log in</a>
+             <a href="/signup" className="px-5 py-2 text-sm font-semibold bg-primary text-white rounded-full hover:shadow-lg hover:shadow-primary/20 transition-all">Join Free</a>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2">
+            {isMenuOpen ? <X size={20}/> : <Menu size={20}/>}
           </button>
-        </div>
+        </nav>
+      </div>
 
-        {/* Mobile Menu Dropdown */}
-        {isMenuOpen && (
-           <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b border-line p-6 flex flex-col gap-4 animate-in slide-in-from-top-5">
-              <a href="#features" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>Features</a>
-              <a href="#stories" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>Success Stories</a>
-              <div className="h-px bg-line my-2"></div>
-              <a href="/login" className="btn w-full border border-line">Log In</a>
-              <a href="/signup" className="btn btn-primary w-full">Join Now</a>
-           </div>
-        )}
-      </nav>
-
-      {/* --- 2. Hero Section --- */}
-      <section className="pt-32 pb-12 lg:pt-48 lg:pb-32 relative">
-        {/* Background Blurs */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none opacity-50" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-muted/10 rounded-full blur-[100px] -z-10 pointer-events-none opacity-50" />
-
-        <div className="main grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider">
-              <Sparkles size={14} />
-              <span>The #1 App for real connections</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-              Dating meant for <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-muted to-primary bg-[length:200%_auto] animate-gradient">
-                Modern Life.
-              </span>
-            </h1>
-            
-            <p className="text-muted text-lg md:text-xl max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              No games, just dates. We use behavioral AI to match you with people who actually want what you want.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              <button className="btn btn-primary h-14 px-8 rounded-full text-lg shadow-xl shadow-primary/20 hover:translate-y-[-2px] transition-transform">
-                <Users size={20} />
-                <span>Find Your Match</span>
-              </button>
-              <button className="h-14 px-8 rounded-full border border-line font-semibold hover:bg-secondary/50 transition-colors flex items-center gap-2">
-                <span>Explore</span>
-                <ArrowRight size={18} />
-              </button>
-            </div>
-            
-            <div className="text-xs text-muted font-medium pt-2">
-              * No credit card required for sign up
-            </div>
+      {/* --- Hero Section --- */}
+      <section className="pt-40 pb-20 md:pt-52 md:pb-32 text-center px-4">
+        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          
+          {/* Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/50 border border-line text-xs font-semibold tracking-wide text-muted mx-auto">
+            <Sparkles size={12} />
+            <span>REDEFINING CONNECTION</span>
           </div>
 
-          {/* Hero Visual - Stacked Cards Effect */}
-          <div className="relative hidden lg:flex justify-center perspective-1000">
-             {/* Card 3 (Back) */}
-             <div className="absolute top-12 right-12 w-[300px] h-[400px] bg-muted/20 rounded-[32px] rotate-12 scale-90 border border-white/10"></div>
-             {/* Card 2 (Middle) */}
-             <div className="absolute top-6 right-6 w-[300px] h-[400px] bg-primary/20 rounded-[32px] rotate-6 scale-95 border border-white/10"></div>
-             
-             {/* Card 1 (Front - Main) */}
-             <div className="relative w-[300px] bg-background border border-line/50 shadow-2xl shadow-primary/10 rounded-[32px] overflow-hidden p-4">
-                <div className="h-[280px] w-full bg-gradient-to-b from-secondary to-line/50 rounded-2xl relative overflow-hidden">
-                    {/* Fake Profile Image Placeholder */}
-                    <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/60 to-transparent">
-                        <div className="text-white">
-                            <h3 className="text-2xl font-bold flex items-center gap-2">Sarah, 24 <CheckCircle size={16} className="text-blue-400 fill-blue-400/20"/></h3>
-                            <p className="text-white/80 text-sm">Designer • 3km away</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex justify-center gap-6 mt-6">
-                    <div className="w-14 h-14 rounded-full border border-line/50 flex items-center justify-center text-muted hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all cursor-pointer">
-                        <X size={24} />
-                    </div>
-                    <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 hover:scale-110 transition-transform cursor-pointer">
-                        <Heart size={24} fill="currentColor" />
-                    </div>
-                </div>
-             </div>
+          {/* Main Headline */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] text-main">
+            Dating, <br className="md:hidden" />
+            <span className="text-muted italic font-serif pr-2">refined.</span>
+          </h1>
 
-             {/* Floating Badge */}
-             <div className="absolute top-20 -left-4 bg-background border border-line shadow-lg px-4 py-3 rounded-xl flex items-center gap-3 animate-bounce">
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-green-600">
-                    <MessageCircle size={16} />
-                </div>
-                <div>
-                    <p className="text-xs text-muted">New Message</p>
-                    <p className="text-sm font-bold">Hey! 👋</p>
-                </div>
-             </div>
+          <p className="text-lg md:text-xl text-muted/80 max-w-xl mx-auto leading-relaxed">
+            Experience a dating app designed for meaningful connections, not endless swiping. Curated matches for the modern era.
+          </p>
+
+          {/* Clean Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <button className="h-12 px-8 rounded-full bg-main text-background font-semibold hover:opacity-90 transition-all flex items-center gap-2">
+              Start Matching <ArrowRight size={16} />
+            </button>
+            <button className="h-12 px-8 rounded-full border border-line bg-background hover:bg-secondary/50 font-medium transition-all">
+              View Demo
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* --- 3. Social Proof --- */}
-      <section className="border-y border-line/40 bg-secondary/30 py-8">
-        <div className="main">
-            <p className="text-center text-sm font-semibold text-muted uppercase tracking-widest mb-6">Trusted by over 2 million daters</p>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                {/* Text Placeholders for Logos */}
-                <span className="text-xl font-bold font-serif">Vogue</span>
-                <span className="text-xl font-bold font-mono">Wired</span>
-                <span className="text-xl font-bold italic">Cosmopolitan</span>
-                <span className="text-xl font-bold">TechCrunch</span>
-                <span className="text-xl font-bold font-serif">GQ</span>
-            </div>
-        </div>
-      </section>
-
-      {/* --- 4. Features Grid (Bento Box Style) --- */}
-      <section id="features" className="py-24 bg-background">
-        <div className="main">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <h2 className="text-4xl font-bold">More than just swiping</h2>
-            <p className="text-muted text-lg">We built features that actually help you get off the app and on a date.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Feature 1 */}
-            <div className="p-8 rounded-3xl border border-line/60 bg-secondary/20 hover:border-primary/40 transition-colors">
-                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
-                    <ShieldCheck size={24} />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Verified Real Humans</h3>
-                <p className="text-muted leading-relaxed">Photo verification is mandatory. No bots, no catfishes, just real people looking for connection.</p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="p-8 rounded-3xl border border-line/60 bg-secondary/20 hover:border-primary/40 transition-colors">
-                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
-                    <Zap size={24} />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Conversation Starters</h3>
-                <p className="text-muted leading-relaxed">Don't know what to say? Our AI suggests icebreakers based on their profile interests.</p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="p-8 rounded-3xl border border-line/60 bg-secondary/20 hover:border-primary/40 transition-colors">
-                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
-                    <Sparkles size={24} />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Smart Matching</h3>
-                <p className="text-muted leading-relaxed">We learn your type over time. The more you use SwiftMatch, the better your matches get.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- 5. Success Stories (Testimonials) --- */}
-      <section id="stories" className="py-24 bg-secondary/30 border-t border-line/30">
-        <div className="main">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                <div className="space-y-4">
-                    <h2 className="text-4xl font-bold">Success Stories</h2>
-                    <p className="text-muted text-lg">Real couples who found love on SwiftMatch.</p>
-                </div>
-                <button className="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all">
-                    Read more stories <ArrowRight size={18}/>
-                </button>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="bg-background p-6 rounded-2xl border border-line shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex gap-1 text-yellow-400 mb-4">
-                            {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
-                        </div>
-                        <p className="text-main mb-6 leading-relaxed">"We matched on a Tuesday and went for coffee on Thursday. 2 years later, we are engaged! I never thought an app would work for me."</p>
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-muted"></div>
-                            <div>
-                                <p className="font-bold text-sm">Alex & Jordan</p>
-                                <p className="text-xs text-muted">Matched Jan 2023</p>
-                            </div>
-                        </div>
+        {/* Abstract Hero Visual - Floating Cards */}
+        <div className="mt-20 relative h-[400px] w-full max-w-[1000px] mx-auto hidden md:block">
+            {/* Left Card */}
+            <div className="absolute left-10 top-10 w-64 h-80 bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl shadow-primary/10 border border-line/40 -rotate-6 transform hover:-rotate-3 transition-all duration-500 p-4">
+                <div className="h-4/5 w-full bg-secondary/50 rounded-2xl mb-4 relative overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center text-muted/20">
+                        <Heart size={48} fill="currentColor"/>
                     </div>
-                ))}
+                </div>
+                <div className="flex gap-2 items-center">
+                    <div className="w-8 h-8 rounded-full bg-secondary"></div>
+                    <div className="h-2 w-20 bg-secondary rounded-full"></div>
+                </div>
             </div>
-        </div>
-      </section>
 
-      {/* --- 6. CTA / Download Section --- */}
-      <section id="download" className="py-24">
-         <div className="main">
-            <div className="bg-primary rounded-[3rem] p-10 md:p-20 text-center md:text-left relative overflow-hidden">
-                {/* Decorative circles */}
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/10 rounded-full blur-[50px] -mr-20 -mt-20"></div>
-                <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-black/10 rounded-full blur-[50px] -ml-10 -mb-10"></div>
-
-                <div className="relative z-10 grid md:grid-cols-2 items-center gap-12">
-                    <div className="space-y-6">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white">Ready to find your person?</h2>
-                        <p className="text-white/80 text-lg max-w-md">Download the app now and start meeting people nearby in less than 2 minutes.</p>
-                        
-                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                            <button className="bg-black text-white px-6 py-3 rounded-xl flex items-center gap-3 hover:bg-gray-900 transition-colors w-fit">
-                                <Apple size={24} fill="white" />
-                                <div className="text-left">
-                                    <div className="text-[10px] uppercase font-medium">Download on the</div>
-                                    <div className="text-sm font-bold leading-none">App Store</div>
-                                </div>
-                            </button>
-                            <button className="bg-black text-white px-6 py-3 rounded-xl flex items-center gap-3 hover:bg-gray-900 transition-colors w-fit">
-                                <div className="text-left">
-                                    <div className="text-[10px] uppercase font-medium">Get it on</div>
-                                    <div className="text-sm font-bold leading-none">Google Play</div>
-                                </div>
-                            </button>
-                        </div>
+            {/* Right Card */}
+            <div className="absolute right-10 top-20 w-64 h-80 bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl shadow-muted/10 border border-line/40 rotate-6 transform hover:rotate-3 transition-all duration-500 p-4 z-10">
+                 <div className="h-4/5 w-full bg-secondary/50 rounded-2xl mb-4 relative overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center text-muted/20">
+                        <Star size={48} fill="currentColor"/>
                     </div>
+                </div>
+                <div className="flex gap-2 items-center">
+                    <div className="w-8 h-8 rounded-full bg-secondary"></div>
+                    <div className="h-2 w-20 bg-secondary rounded-full"></div>
+                </div>
+            </div>
 
-                    {/* Phone Mockup Graphic */}
-                    <div className="hidden md:flex justify-center relative">
-                         <div className="w-[260px] h-[500px] bg-background border-[8px] border-black rounded-[3rem] shadow-2xl relative overflow-hidden translate-y-12">
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-xl z-20"></div>
-                            <div className="w-full h-full bg-secondary center flex-col gap-4">
-                                <Heart size={48} className="text-primary animate-pulse" fill="currentColor" />
-                                <p className="font-bold text-primary">SwiftMatch</p>
-                            </div>
+            {/* Center Phone Mockup (CSS only) */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[280px] h-[550px] bg-background border-[8px] border-main/10 rounded-[3rem] shadow-2xl z-20 overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-main/10 rounded-b-xl z-30" />
+                
+                {/* Screen Content */}
+                <div className="w-full h-full flex flex-col relative">
+                    {/* Chat Bubble Animation */}
+                    <div className="flex-1 p-6 flex flex-col justify-end space-y-4 pb-20">
+                         <div className="self-start bg-secondary p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%] animate-in slide-in-from-left-4 fade-in duration-700">
+                            Hi! I noticed we both love hiking. 🏔️
+                         </div>
+                         <div className="self-end bg-primary text-white p-3 rounded-2xl rounded-tr-none text-sm max-w-[80%] shadow-lg shadow-primary/20 animate-in slide-in-from-right-4 fade-in duration-700 delay-300 fill-mode-forwards opacity-0" style={{animationDelay: '1s'}}>
+                            Yes! I was just at Yosemite last week.
                          </div>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
       </section>
 
-      {/* --- Footer --- */}
-      <footer className="bg-background border-t border-line pt-16 pb-8">
-        <div className="main grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            <div className="col-span-2 md:col-span-1 space-y-4">
-                <div className="flex items-center gap-2">
-                    <Heart size={20} className="text-primary" fill="currentColor" />
-                    <span className="font-bold text-xl">SwiftMatch</span>
+      {/* --- Neat Bento Grid Features --- */}
+      <section id="features" className="py-24 main">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+            
+            {/* Big Feature Block */}
+            <div className="md:col-span-2 bg-secondary/30 border border-line/20 rounded-[2.5rem] p-10 flex flex-col justify-between hover:bg-secondary/50 transition-colors group">
+                <div className="max-w-md">
+                    <div className="w-12 h-12 bg-background rounded-2xl flex items-center justify-center mb-6 shadow-sm text-primary">
+                        <ShieldCheck />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">Safety First, Always.</h3>
+                    <p className="text-muted">We use advanced AI to verify every single photo. If they don't look like their picture, they don't get on the app.</p>
                 </div>
-                <p className="text-sm text-muted">Making dating simple, safe, and fun again.</p>
+                <div className="mt-8 flex gap-4">
+                    <div className="px-4 py-2 bg-background rounded-full text-xs font-bold border border-line/50 flex items-center gap-2">
+                        <Check size={12} className="text-green-500" /> Photo Verified
+                    </div>
+                    <div className="px-4 py-2 bg-background rounded-full text-xs font-bold border border-line/50 flex items-center gap-2">
+                        <Check size={12} className="text-green-500" /> ID Check
+                    </div>
+                </div>
+            </div>
+
+            {/* Tall Feature Block */}
+            <div className="md:row-span-2 bg-primary text-white rounded-[2.5rem] p-10 flex flex-col relative overflow-hidden group">
+                <div className="relative z-10">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
+                        <Sparkles className="text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">Intelligent Matching</h3>
+                    <p className="text-white/80 leading-relaxed">Our algorithm learns your "type" not just by what you say, but who you actually engage with.</p>
+                </div>
+                {/* Decorative Pattern */}
+                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+            </div>
+
+            {/* Small Feature Block */}
+            <div className="bg-background border border-line rounded-[2.5rem] p-10 hover:border-primary/30 transition-colors">
+                <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mb-6 text-main">
+                    <MessageCircle />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Instant Chat</h3>
+                <p className="text-muted text-sm">No 24-hour countdowns. Match and talk immediately.</p>
+            </div>
+
+            {/* Small Feature Block */}
+             <div className="bg-background border border-line rounded-[2.5rem] p-10 hover:border-primary/30 transition-colors">
+                <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mb-6 text-main">
+                    <Star />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Top Picks</h3>
+                <p className="text-muted text-sm">Daily curated list of people most compatible with you.</p>
+            </div>
+        </div>
+      </section>
+
+      {/* --- Minimalist Numbers --- */}
+      <section className="py-20 border-y border-line/20 bg-secondary/10">
+          <div className="main flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
+              <h2 className="text-3xl font-bold max-w-xs">Trusted by the world's best daters.</h2>
+              
+              <div className="flex gap-12 md:gap-24">
+                  <div>
+                      <div className="text-4xl font-bold text-primary mb-1">2M+</div>
+                      <div className="text-sm font-medium text-muted uppercase tracking-wider">Matches</div>
+                  </div>
+                  <div>
+                      <div className="text-4xl font-bold text-primary mb-1">150+</div>
+                      <div className="text-sm font-medium text-muted uppercase tracking-wider">Countries</div>
+                  </div>
+                  <div>
+                      <div className="text-4xl font-bold text-primary mb-1">4.9</div>
+                      <div className="text-sm font-medium text-muted uppercase tracking-wider">App Rating</div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* --- Clean Footer CTA --- */}
+      <section id="download" className="py-32 text-center px-4">
+        <div className="max-w-3xl mx-auto space-y-8">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Ready to meet your person?</h2>
+            <p className="text-lg text-muted">Join the community of millions who have found meaningful connections on SwiftMatch.</p>
+            
+            <div className="flex items-center justify-center gap-4">
+                <button className="h-14 px-8 rounded-full bg-main text-background font-bold flex items-center gap-3 hover:scale-105 transition-transform">
+                    <Smartphone size={20} />
+                    Download App
+                </button>
             </div>
             
-            <div className="space-y-4">
-                <h4 className="font-bold">Company</h4>
-                <ul className="space-y-2 text-sm text-muted">
-                    <li><a href="#" className="hover:text-primary">About</a></li>
-                    <li><a href="#" className="hover:text-primary">Careers</a></li>
-                    <li><a href="#" className="hover:text-primary">Press</a></li>
-                </ul>
-            </div>
-            <div className="space-y-4">
-                <h4 className="font-bold">Legal</h4>
-                <ul className="space-y-2 text-sm text-muted">
-                    <li><a href="#" className="hover:text-primary">Privacy</a></li>
-                    <li><a href="#" className="hover:text-primary">Terms</a></li>
-                    <li><a href="#" className="hover:text-primary">Cookies</a></li>
-                </ul>
-            </div>
-            <div className="space-y-4">
-                <h4 className="font-bold">Social</h4>
-                <ul className="space-y-2 text-sm text-muted">
-                    <li><a href="#" className="hover:text-primary">Instagram</a></li>
-                    <li><a href="#" className="hover:text-primary">Twitter</a></li>
-                    <li><a href="#" className="hover:text-primary">TikTok</a></li>
-                </ul>
-            </div>
+            <p className="text-xs text-muted/60 pt-8">
+                © 2025 SwiftMatch. All rights reserved. <br />
+                <a href="#" className="underline hover:text-primary">Privacy Policy</a> • <a href="#" className="underline hover:text-primary">Terms of Service</a>
+            </p>
         </div>
-        <div className="main border-t border-line/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted">
-            <p>© 2025 SwiftMatch Inc. All rights reserved.</p>
-            <p>Made with ♥ for connections.</p>
-        </div>
-      </footer>
+      </section>
+
     </div>
   );
 }
