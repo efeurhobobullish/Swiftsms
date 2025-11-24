@@ -5,23 +5,23 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --secondary: #f9f9f9;
-  --foreground: #f5f5f5;
-  --main: #444;
-  --muted: #999999;
-  --primary: #222;
-  --line: #f1f1f1;
+  --background: #fef7ff;
+  --secondary: #faf0ff;
+  --foreground: #f5e8ff;
+  --main: #5a189a;
+  --muted: #c77dff;
+  --primary: #7b2cbf;
+  --line: #e9c8ff;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #212121;
-  --main: #fefefe;
-  --secondary: #121212;
-  --muted: #999999;
-  --line: #212121;
-  --primary: #fefefe;
+  --background: #10002b;
+  --foreground: #240046;
+  --main: #e0aaff;
+  --secondary: #1a0033;
+  --muted: #9d4edd;
+  --line: #3c096c;
+  --primary: #c77dff;
 }
 
 @theme inline {
@@ -71,4 +71,3 @@ button,
 .hide-scrollbar::-webkit-scrollbar-thumb {
   @apply hidden;
 }
-
