@@ -7,8 +7,7 @@ import {
   User, 
   Lock, 
   Eye, 
-  EyeOff,
-  ArrowRight
+  EyeOff
 } from "lucide-react";
 import { Pattern, ButtonWithLoader, ModeToggle } from "@/components/ui";
 
