@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { 
   Ghost, 
   User, 
   Lock, 
-  ArrowRight, 
   Eye, 
   EyeOff,
   Check
 } from "lucide-react";
 import { Pattern, ButtonWithLoader, ModeToggle } from "@/components/ui";
+import { useThemeStore } from "@/store";
 
 export default function Signup() {
+  const { theme } = useThemeStore();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -23,6 +24,7 @@ export default function Signup() {
     confirmPassword: ""
   });
 
+  const logoPath = theme === "dark" ? "/logo-white.svg" : "/logo-black.svg";
 
   // Check for username in URL params (from Home page input)
   useEffect(() => {
@@ -33,11 +35,11 @@ export default function Signup() {
     }
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     // Basic Validation
@@ -208,4 +210,3 @@ export default function Signup() {
     </Pattern>
   );
 }
-
