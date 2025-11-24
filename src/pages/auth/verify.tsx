@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader, Mail, CheckCircle, } from "lucide-react";
+import { Loader, Mail, CheckCircle } from "lucide-react";
 import { ButtonWithLoader } from "@/components/ui";
 import { useThemeStore } from "@/store";
 
@@ -17,11 +17,11 @@ export default function Verify() {
 
   useEffect(() => {
     if (token) {
-      verifyEmail(token);
+      verifyEmail();
     }
   }, [token]);
 
-  const verifyEmail = async (verificationToken: string) => {
+  const verifyEmail = async () => {
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -101,7 +101,7 @@ export default function Verify() {
                   className="w-full py-3 border border-border text-foreground rounded-lg font-medium hover:bg-accent transition-colors"
                 />
                 
-                <Link to="/login" className="block">
+                <Link to="/auth/login" className="block">
                   <button className="w-full py-3 text-muted-foreground hover:text-foreground rounded-lg font-medium transition-colors">
                     Back to Login
                   </button>
