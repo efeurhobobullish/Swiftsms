@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader, Mail, CheckCircle, AlertCircle, Gamepad2 } from "lucide-react";
+import { Loader, Mail, CheckCircle, } from "lucide-react";
 import { ButtonWithLoader } from "@/components/ui";
 import { useThemeStore } from "@/store";
 
