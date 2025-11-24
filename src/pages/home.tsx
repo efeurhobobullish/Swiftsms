@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import CountUp from "react-countup";
 import { 
   Loader, 
   MessageCircle, 
@@ -7,7 +8,6 @@ import {
   Heart, 
   Sparkles, 
   ArrowRight,
-  Instagram,
   Ghost
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -79,7 +79,6 @@ export default function Home() {
         <header className="w-full p-6 md:p-8 flex justify-between items-center max-w-7xl mx-auto z-20">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-main text-background rounded-xl">
-               {/* Simple Icon Logo if image fails, or use img tag provided earlier */}
                <Ghost className="w-6 h-6 md:w-7 md:h-7" />
             </div>
             <span className="text-xl font-bold tracking-tight text-main">
@@ -119,7 +118,9 @@ export default function Home() {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
-                    50,000+ messages sent today
+                    <span>
+                      <CountUp end={50000} separator="," duration={2.5} />+ messages sent today
+                    </span>
                   </motion.div>
 
                   <motion.h1
@@ -190,7 +191,9 @@ export default function Home() {
                           <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500">
                             <Heart size={20} fill="currentColor" />
                           </div>
-                          <span className="text-xs text-muted font-mono">12m ago</span>
+                          <span className="text-xs text-muted font-mono">
+                             <CountUp end={12} duration={2} />m ago
+                          </span>
                         </div>
                         <p className="text-lg font-medium text-main">"I've always had a crush on you... just too shy to say it 🙈"</p>
                       </div>
@@ -201,7 +204,9 @@ export default function Home() {
                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
                             <Ghost size={20} />
                           </div>
-                          <span className="text-xs text-white/60 font-mono">2m ago</span>
+                          <span className="text-xs text-white/60 font-mono">
+                            <CountUp end={2} duration={4} />m ago
+                          </span>
                         </div>
                         <p className="text-lg font-medium">"Where did you get that hoodie you wore today? It looked fire!"</p>
                       </div>
@@ -212,7 +217,9 @@ export default function Home() {
                           <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
                             <MessageCircle size={20} />
                           </div>
-                          <span className="text-xs text-muted font-mono">1h ago</span>
+                          <span className="text-xs text-muted font-mono">
+                            <CountUp end={1} duration={3} />h ago
+                          </span>
                         </div>
                         <p className="text-lg font-medium text-main">"Are you going to the party this weekend?"</p>
                       </div>
