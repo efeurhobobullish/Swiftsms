@@ -11,9 +11,7 @@ import {
   Trophy,
   MessageCircle,
   Gamepad2,
-  Sparkles,
-  Crown,
-  Mic
+  Crown
 } from "lucide-react";
 import { useThemeStore } from "@/store";
 
