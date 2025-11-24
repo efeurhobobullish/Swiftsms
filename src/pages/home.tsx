@@ -1,5 +1,6 @@
 import ModeToggle from "@/components/ui/mode-toggle";
 import { Heart, ArrowRight, Users, Sparkles } from "lucide-react";
+import { features } from "@/constants/data"; // Add this import
 
 export default function Home() {
   return (
