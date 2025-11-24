@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Eye, EyeOff, Users } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { ButtonWithLoader } from "@/components/ui";
 import { useThemeStore } from "@/store";
 
