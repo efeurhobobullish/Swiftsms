@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import BottomNav from "@/layouts/BottomNav";
-import { ALL_SERVICES } from "@/constant/data";
+import { ALL_SERVICES } from "@/constants/data";
 
 export default function Services() {
   const [search, setSearch] = useState("");
