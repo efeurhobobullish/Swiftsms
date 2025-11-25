@@ -1,124 +1,278 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { toast } from "sonner";
-import { Eye, EyeOff, Mail, Lock, Zap } from "lucide-react";
-import { ButtonWithLoader, ModeToggle, Pattern } from "@/components/ui";
+import { 
+  Eye, 
+  EyeOff, 
+  Mail, 
+  Lock, 
+  ArrowLeft,
+  Zap,
+  Smartphone
+} from "lucide-react";
+import { ButtonWithLoader, Pattern } from "@/components/ui";
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
+    rememberMe: false
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.email || !formData.password) {
-      toast.error("Please enter your credentials");
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsLoading(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Handle successful login
+      console.log("Login successful", formData);
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
+    } catch (error) {
+      setErrors({ submit: "Invalid email or password. Please try again." });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
     
-    setIsLoading(false);
-    toast.success("Welcome back!");
-    navigate("/dashboard");
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+  };
+
+  const handleDemoLogin = () => {
+    setFormData({
+      email: "demo@swift.com",
+      password: "demopassword123",
+      rememberMe: false
+    });
   };
 
   return (
     <Pattern>
-      <div className="min-h-screen w-full flex flex-col relative z-10">
-        {/* Minimal Header */}
-        <header className="w-full p-6 flex justify-between items-center layout">
-          <Link to="/" className="flex items-center gap-2">
-             <div className="w-8 h-8 bg-gradient-to-r from-violet-900 to-pink-400 rounded-lg flex items-center justify-center text-white">
-               <Zap size={18} fill="currentColor" />
-             </div>
-             <span className="font-jaro text-xl tracking-wide text-main">SWIFT</span>
-          </Link>
-          <ModeToggle />
-        </header>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Back Button */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-6"
+          >
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-muted hover:text-main transition-colors group"
+            >
+              <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+              Back to home
+            </Link>
+          </motion.div>
 
-        <main className="flex-1 center px-4 pb-12">
-          <motion.div 
+          {/* Login Card */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md bg-secondary/50 border border-line p-8 rounded-[2rem] backdrop-blur-xl shadow-xl"
+            transition={{ delay: 0.3 }}
+            className="bg-card border border-line rounded-2xl p-8 shadow-sm"
           >
+            {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold font-jaro mb-2 text-main">Welcome Back</h1>
-              <p className="text-sm text-muted">Continue to your dashboard</p>
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center text-card">
+                  <Zap size={24} fill="currentColor" />
+                </div>
+                <span className="text-2xl font-bold text-main">SWIFT</span>
+              </div>
+              <h1 className="text-2xl font-bold text-main mb-2">Welcome back</h1>
+              <p className="text-muted">Sign in to your account to continue</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div className="relative">
-                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-                <input 
-                  type="email" 
-                  placeholder="Email Address"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="input w-full pl-11 bg-background"
-                />
+            {/* Demo Login Button */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              onClick={handleDemoLogin}
+              className="w-full mb-6 p-3 rounded-xl bg-secondary border border-line hover:border-primary/30 transition-all flex items-center justify-center gap-3 group"
+            >
+              <Smartphone size={20} className="text-muted group-hover:text-primary transition-colors" />
+              <span className="text-main font-medium">Try Demo Account</span>
+            </motion.button>
+
+            {/* Divider */}
+            <div className="mb-6 flex items-center">
+              <div className="flex-1 h-px bg-line"></div>
+              <span className="px-4 text-sm text-muted">or sign in with email</span>
+              <div className="flex-1 h-px bg-line"></div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-main mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail 
+                    size={20} 
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" 
+                  />
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full h-12 pl-10 pr-4 rounded-xl bg-background border ${
+                      errors.email ? "border-red-500" : "border-line"
+                    } focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-main placeholder:text-muted/50`}
+                    placeholder="Enter your email"
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <div className="relative">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="input w-full pl-11 pr-11 bg-background"
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-main transition-colors"
+              {/* Password Field */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-main">
+                    Password
+                  </label>
+                  <Link
+                    to="/forgot-password"
+                    className="text-sm text-primary hover:text-primary/80 transition-colors"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-                <div className="flex justify-end">
-                  <Link to="/forgot-password" className="text-xs text-muted hover:text-primary transition-colors">
-                    Forgot Password?
+                    Forgot password?
                   </Link>
                 </div>
+                <div className="relative">
+                  <Lock 
+                    size={20} 
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" 
+                  />
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`w-full h-12 pl-10 pr-12 rounded-xl bg-background border ${
+                      errors.password ? "border-red-500" : "border-line"
+                    } focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-main placeholder:text-muted/50`}
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-main transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.password}
+                  </p>
+                )}
               </div>
 
-              <div className="pt-2">
-                <ButtonWithLoader 
-                  loading={isLoading}
-                  initialText="Log In"
-                  loadingText="Signing In..."
-                  className="btn-primary w-full h-12 rounded-xl text-sm uppercase tracking-wider hover:shadow-lg hover:shadow-violet-500/20 transition-all"
+              {/* Remember Me */}
+              <div className="flex items-center gap-3">
+                <input
+                  id="rememberMe"
+                  name="rememberMe"
+                  type="checkbox"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                  className="w-4 h-4 rounded border-line text-primary focus:ring-primary/20 focus:ring-2"
                 />
+                <label htmlFor="rememberMe" className="text-sm text-muted">
+                  Remember me for 30 days
+                </label>
               </div>
+
+              {/* Submit Button */}
+              <ButtonWithLoader
+                type="submit"
+                loading={isLoading}
+                initialText="Sign In"
+                loadingText="Signing in..."
+                className="w-full h-12 rounded-xl bg-primary text-card font-semibold hover:bg-primary/90 active:scale-95 transition-all"
+              />
+
+              {errors.submit && (
+                <p className="text-red-500 text-sm text-center">
+                  {errors.submit}
+                </p>
+              )}
             </form>
 
-            <div className="mt-8 text-center space-y-4">
-              <div className="h-[1px] bg-line w-full" />
-              
-              <div className="text-sm text-muted">
+            {/* Sign Up Link */}
+            <div className="text-center mt-6">
+              <p className="text-muted">
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-primary font-bold hover:underline ml-1">
-                  Sign Up
+                <Link
+                  to="/signup"
+                  className="text-primary font-semibold hover:text-primary/80 transition-colors"
+                >
+                  Sign up
                 </Link>
-              </div>
+              </p>
             </div>
           </motion.div>
-        </main>
+
+          {/* Security Notice */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-6"
+          >
+            <p className="text-xs text-muted max-w-sm mx-auto">
+              Your data is securely encrypted. We never share your information with third parties.
+            </p>
+          </motion.div>
+        </div>
       </div>
     </Pattern>
   );
