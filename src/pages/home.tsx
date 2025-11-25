@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode, ButtonHTMLAttributes } from 'react';
 import { 
   motion, 
   AnimatePresence 
@@ -15,7 +15,6 @@ import {
   ShieldCheck,
   CreditCard,
   Search,
-  MessageSquare,
   Smartphone,
   ArrowRight
 } from 'lucide-react';
@@ -54,7 +53,11 @@ const ModeToggle = () => {
   );
 };
 
-const Pattern = ({ children }) => (
+interface PatternProps {
+  children: ReactNode;
+}
+
+const Pattern = ({ children }: PatternProps) => (
   <div className="relative w-full min-h-screen bg-background text-main overflow-x-hidden font-sans selection:bg-main selection:text-background">
     <div className="fixed inset-0 z-0 opacity-[0.4] pointer-events-none" 
       style={{
@@ -66,9 +69,16 @@ const Pattern = ({ children }) => (
   </div>
 );
 
-const Button = ({ children, variant = 'primary', className = '', ...props }) => {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: 'primary' | 'outline' | 'ghost';
+  className?: string;
+}
+
+const Button = ({ children, variant = 'primary', className = '', ...props }: ButtonProps) => {
   const base = "inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold transition-all duration-200 active:scale-95 text-sm md:text-base";
-  const styles = {
+  
+  const styles: Record<string, string> = {
     primary: "bg-main text-background hover:bg-main/90 shadow-lg hover:shadow-xl hover:-translate-y-0.5",
     outline: "border-2 border-line bg-transparent hover:bg-secondary text-main",
     ghost: "bg-transparent hover:bg-secondary text-muted hover:text-main"
@@ -525,7 +535,7 @@ const Footer = () => (
   </footer>
 );
 
-export default function SwiftPlugApp() {
+export default function Home() {
   return (
     <Pattern>
       <div className="flex flex-col min-h-screen">
@@ -541,5 +551,4 @@ export default function SwiftPlugApp() {
     </Pattern>
   );
 }
-
 
