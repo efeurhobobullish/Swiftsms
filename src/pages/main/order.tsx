@@ -2,8 +2,7 @@ import { useState } from "react";
 import { 
   ChevronDown,
   Search,
-  CheckCircle2,
-  Loader2
+  CheckCircle2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
