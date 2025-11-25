@@ -36,9 +36,9 @@ const BottomNav = () => {
   return (
     <>
       {/* Main floating bar */}
-      {/* used bg-primary because in your css primary is the inverse of background */}
-      <div className="bg-primary text-background p-3 rounded-full fixed bottom-6 left-1/2 -translate-x-1/2 z-50 shadow-2xl min-w-[320px]">
-        
+      {/* bg-primary = Orange, text-white = White */}
+      <div className="bg-primary text-white p-3 rounded-full fixed bottom-6 left-1/2 -translate-x-1/2 z-50 shadow-2xl shadow-primary/20 min-w-[320px]">
+
         {/* The List with a gap in the middle for the button */}
         <ul className="flex items-center justify-between gap-16 px-4">
           {firstTwo.map((item) => (
@@ -47,8 +47,8 @@ const BottomNav = () => {
                 to={item.link}
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center gap-2 text-xs font-bold bg-background/20 text-background rounded-full px-4 py-2.5 border border-background/10 transition-all"
-                    : "flex items-center gap-2 text-xs font-medium text-background/60 rounded-full px-4 py-2.5 hover:bg-background/10 transition-all"
+                    ? "flex items-center gap-2 text-xs font-bold bg-white/20 text-white rounded-full px-4 py-2.5 border border-white/10 transition-all"
+                    : "flex items-center gap-2 text-xs font-medium text-white/70 rounded-full px-4 py-2.5 hover:bg-white/10 transition-all"
                 }
               >
                 <item.icon size={18} />
@@ -59,11 +59,12 @@ const BottomNav = () => {
         </ul>
 
         {/* The Floating Toggle Button */}
-        {/* Border-background ensures it blends with the page background behind the bar */}
+        {/* Border matches page background to create the "cutout" effect */}
+        {/* Text is primary (Orange) to match the theme */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle menu"
-          className="absolute border-[6px] border-background -top-6 left-1/2 -translate-x-1/2 bg-background text-main h-16 w-16 flex items-center justify-center rounded-full shadow-xl hover:scale-105 transition-transform"
+          className="absolute border-[6px] border-background -top-6 left-1/2 -translate-x-1/2 bg-background text-primary h-16 w-16 flex items-center justify-center rounded-full shadow-xl hover:scale-105 transition-transform"
         >
           {isOpen ? <X size={24} /> : <LayoutGrid size={24} />}
         </button>
@@ -97,8 +98,8 @@ const BottomNav = () => {
                       onClick={() => setIsOpen(false)}
                       className={({ isActive }) =>
                         isActive
-                          ? "flex items-center gap-3 text-sm font-bold bg-main text-background rounded-xl p-4 transition-all"
-                          : "flex items-center gap-3 text-sm font-medium text-muted hover:text-main hover:bg-secondary border border-transparent p-4 transition-all rounded-xl"
+                          ? "flex items-center gap-3 text-sm font-bold bg-primary text-white rounded-xl p-4 transition-all shadow-md shadow-primary/20"
+                          : "flex items-center gap-3 text-sm font-medium text-muted hover:text-primary hover:bg-secondary border border-transparent p-4 transition-all rounded-xl"
                       }
                     >
                       <item.icon size={22} />
