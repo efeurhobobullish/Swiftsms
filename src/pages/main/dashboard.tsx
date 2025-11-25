@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { 
   Bell, 
   Plus,
   ChevronDown,
   Search,
   CheckCircle2,
-  Ghost,
   Smartphone,
   ArrowRight,
   Loader2,
@@ -14,21 +13,21 @@ import {
   History
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "sonner"; // Ensure you have this installed
+import { toast } from "sonner";
 import BottomNav from "@/layouts/BottomNav";
 import { ModeToggle, ButtonWithLoader } from "@/components/ui";
 
-// Import your data
-import { ALL_COUNTRIES, ALL_SERVICES } from "@/constants/data";
+// Import data and Types
+import { ALL_COUNTRIES, ALL_SERVICES, Country, Service } from "@/constant/data";
 
 export default function Dashboard() {
   const [balance, setBalance] = useState(12500.00);
   const [totalNumbers, setTotalNumbers] = useState(42); 
   const [isLoading, setIsLoading] = useState(false);
   
-  // Selection State
-  const [selectedCountry, setSelectedCountry] = useState(ALL_COUNTRIES.find(c => c.id === "us") || ALL_COUNTRIES[0]);
-  const [selectedService, setSelectedService] = useState(ALL_SERVICES.find(s => s.id === "wa") || ALL_SERVICES[0]);
+  // Selection State (Typed correctly)
+  const [selectedCountry, setSelectedCountry] = useState<Country>(ALL_COUNTRIES[0]);
+  const [selectedService, setSelectedService] = useState<Service>(ALL_SERVICES[0]);
   
   // Dropdown UI State
   const [isCountryOpen, setIsCountryOpen] = useState(false);
@@ -40,14 +39,13 @@ export default function Dashboard() {
   const [activeOrder, setActiveOrder] = useState<any>(null);
 
   // Filtering
-  const filteredCountries = ALL_COUNTRIES.filter(c => 
+  const filteredCountries = ALL_COUNTRIES.filter((c: Country) => 
     c.name.toLowerCase().includes(countrySearch.toLowerCase())
   );
-  const filteredServices = ALL_SERVICES.filter(s => 
+  const filteredServices = ALL_SERVICES.filter((s: Service) => 
     s.name.toLowerCase().includes(serviceSearch.toLowerCase())
   );
 
-  // --- THE MISSING LOGIC ---
   const handlePurchase = async () => {
     if (activeOrder) {
       toast.error("You already have an active number. Finish that first.");
@@ -73,11 +71,10 @@ export default function Dashboard() {
       id: Math.random().toString(36).substr(2, 9),
       service: selectedService,
       country: selectedCountry,
-      // Generate fake number based on country code
       number: `${selectedCountry.code} ${Math.floor(Math.random() * 800) + 100} ${Math.floor(Math.random() * 900000) + 100000}`,
-      status: "waiting", // waiting | received
+      status: "waiting",
       smsCode: null,
-      expiry: Date.now() + 15 * 60 * 1000 // 15 mins from now
+      expiry: Date.now() + 15 * 60 * 1000 
     };
 
     setActiveOrder(newOrder);
@@ -175,7 +172,7 @@ export default function Dashboard() {
            </button>
         </div>
 
-        {/* --- ACTIVE ORDER SECTION (Appears when activeOrder exists) --- */}
+        {/* --- ACTIVE ORDER SECTION --- */}
         <AnimatePresence>
           {activeOrder && (
             <motion.div
@@ -285,7 +282,7 @@ export default function Dashboard() {
                         />
                       </div>
                      <div className="py-2 space-y-1 max-h-[250px] overflow-y-auto custom-scrollbar">
-                        {filteredCountries.map(country => (
+                        {filteredCountries.map((country: Country) => (
                           <button
                             key={country.id}
                             onClick={() => { setSelectedCountry(country); setIsCountryOpen(false); }}
@@ -343,7 +340,7 @@ export default function Dashboard() {
                         />
                       </div>
                      <div className="py-2 space-y-1 max-h-[250px] overflow-y-auto custom-scrollbar">
-                        {filteredServices.map(service => (
+                        {filteredServices.map((service: Service) => (
                           <button
                             key={service.id}
                             onClick={() => { setSelectedService(service); setIsServiceOpen(false); }}
@@ -379,7 +376,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Recent Activity (Shown only if NO active order for neatness, or keep below) */}
+        {/* Recent Activity */}
         {!activeOrder && (
           <div className="pb-4">
             <h3 className="font-bold text-lg mb-4">Recent Activity</h3>
