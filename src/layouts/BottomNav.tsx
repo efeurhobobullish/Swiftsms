@@ -36,7 +36,7 @@ const BottomNav = () => {
   return (
     <>
       {/* Main floating bar */}
-      <div className="bg-main p-4 rounded-full fixed bottom-8 left-1/2 -translate-x-1/2 z-50 shadow-2xl flex items-center justify-between min-w-[320px] md:min-w-[350px]">
+      <div className="bg-primary text-primary-foreground p-3 rounded-full fixed bottom-8 left-1/2 -translate-x-1/2 z-50 shadow-2xl flex items-center justify-between min-w-[320px] md:min-w-[350px]">
         {/* Left items */}
         <ul className="flex items-center gap-2">
           {firstTwo.map((item) => (
@@ -45,8 +45,8 @@ const BottomNav = () => {
                 to={item.link}
                 className={({ isActive }) =>
                   isActive
-                    ? "text-background flex items-center gap-2 text-xs font-medium bg-white/20 rounded-full py-2 px-3 border border-white/10 transition-all"
-                    : "text-background/70 flex items-center gap-2 text-xs font-medium rounded-full py-2 px-3 hover:bg-white/10 transition-all"
+                    ? "bg-primary-foreground/20 text-primary-foreground flex items-center gap-2 text-xs font-medium rounded-full py-2 px-4 border border-primary-foreground/10 transition-all"
+                    : "text-primary-foreground/70 flex items-center gap-2 text-xs font-medium rounded-full py-2 px-3 hover:bg-primary-foreground/10 transition-all"
                 }
               >
                 <item.icon size={18} />
@@ -57,15 +57,19 @@ const BottomNav = () => {
         </ul>
 
         {/* Center Toggle Button */}
+        {/* Note: The border color here (border-background) ensures it blends with the page background behind it */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle menu"
-          className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background border-[6px] border-background text-main h-16 w-16 flex items-center justify-center rounded-full shadow-lg z-50 hover:scale-105 transition-transform"
+          className="absolute -top-5 left-1/2 -translate-x-1/2 bg-background border-[6px] border-background text-foreground h-14 w-14 flex items-center justify-center rounded-full shadow-lg z-50 hover:scale-105 transition-transform"
         >
-          {isOpen ? <X size={24} /> : <LayoutGrid size={24} />}
+          <div className="bg-primary text-primary-foreground w-full h-full rounded-full flex items-center justify-center">
+             {isOpen ? <X size={20} /> : <LayoutGrid size={20} />}
+          </div>
         </button>
 
-        {/* This spacer pushes the items to the sides if needed, but for now we just render the button absolute */}
+        {/* Right side spacer to balance the layout since the button is absolute */}
+        <div className="w-[100px]" /> 
       </div>
 
       <AnimatePresence>
@@ -77,7 +81,7 @@ const BottomNav = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm"
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
               onClick={() => setIsOpen(false)}
             />
 
@@ -86,9 +90,9 @@ const BottomNav = () => {
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
-              className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-background border border-line p-4 rounded-3xl z-50 shadow-2xl"
+              className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-card text-card-foreground border border-border p-4 rounded-3xl z-50 shadow-2xl"
             >
-              <ul className="grid grid-cols-2 gap-2">
+              <ul className="grid grid-cols-2 gap-3">
                 {remainingItems.map((item) => (
                   <li key={item.name}>
                     <NavLink
@@ -96,8 +100,8 @@ const BottomNav = () => {
                       onClick={() => setIsOpen(false)}
                       className={({ isActive }) =>
                         isActive
-                          ? "flex flex-col items-center justify-center gap-2 text-sm font-bold bg-main text-background rounded-2xl p-4 transition-all"
-                          : "flex flex-col items-center justify-center gap-2 text-sm font-medium text-muted rounded-2xl bg-secondary/50 hover:bg-secondary hover:text-main p-4 transition-all"
+                          ? "flex flex-col items-center justify-center gap-2 text-sm font-bold bg-primary text-primary-foreground rounded-2xl p-4 transition-all shadow-md"
+                          : "flex flex-col items-center justify-center gap-2 text-sm font-medium text-muted-foreground rounded-2xl bg-secondary/50 hover:bg-secondary hover:text-foreground p-4 transition-all"
                       }
                     >
                       <item.icon size={24} />
