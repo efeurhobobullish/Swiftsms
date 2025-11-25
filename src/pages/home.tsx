@@ -7,8 +7,7 @@ import {
   Smartphone, 
   ShieldCheck, 
   Globe, 
-  Phone,
-  ArrowRight
+  Phone
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import api from "@/api/axios";
@@ -42,12 +41,27 @@ export default function Home() {
     window.location.href = "/dashboard?service=" + searchQuery;
   };
 
-  // Simplified steps content
   const steps = [
-    { icon: Globe, title: "Select Country", desc: "150+ Regions" },
-    { icon: MessageCircle, title: "Choose App", desc: "WhatsApp, etc" },
-    { icon: Smartphone, title: "Get Number", desc: "Instant Access" },
-    { icon: ShieldCheck, title: "Receive Code", desc: "SMS Verify" },
+    { 
+      icon: Globe, 
+      title: "Select Country", 
+      desc: "150+ Regions supported" 
+    },
+    { 
+      icon: MessageCircle, 
+      title: "Choose App", 
+      desc: "WhatsApp, Telegram, etc" 
+    },
+    { 
+      icon: Smartphone, 
+      title: "Get Number", 
+      desc: "Instant allocation" 
+    },
+    { 
+      icon: ShieldCheck, 
+      title: "Receive SMS", 
+      desc: "Code appears here" 
+    },
   ];
 
   return (
@@ -202,45 +216,41 @@ export default function Home() {
                    </div>
                 </motion.div>
 
-                {/* REDESIGNED: How it Works (Compact Shape Panel) */}
+                {/* REDESIGNED: How it Works (Compact Horizontal Cards) */}
                 <motion.div
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1.5 }}
-                  className="pt-12 w-full max-w-4xl mx-auto px-4"
+                  className="pt-12 w-full max-w-6xl mx-auto px-4"
                 >
-                  <p className="text-muted text-xs uppercase tracking-[0.2em] mb-8 font-bold">
-                    How it works
-                  </p>
-                  
-                  {/* The Shape Container */}
-                  <div className="bg-background border border-line rounded-[2.5rem] shadow-sm overflow-hidden">
-                    <div className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-line">
-                      {steps.map((step, idx) => (
-                        <div
-                          key={idx}
-                          className="flex-1 p-6 sm:p-8 flex flex-col items-center justify-center hover:bg-secondary/20 transition-colors group relative"
-                        >
-                          <div className="absolute top-4 right-4 text-[10px] font-bold text-line group-hover:text-muted transition-colors">
-                            0{idx + 1}
-                          </div>
-                          
-                          <div className="w-12 h-12 rounded-2xl bg-secondary/50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-main group-hover:text-background transition-all duration-300">
-                            <step.icon size={22} strokeWidth={2} />
-                          </div>
-                          
-                          <h3 className="font-bold text-lg text-main mb-1">{step.title}</h3>
-                          <p className="text-muted text-xs font-medium uppercase tracking-wide">{step.desc}</p>
+                  {/* Title */}
+                  <div className="flex items-center justify-center gap-4 mb-8">
+                     <div className="h-[1px] w-12 bg-line"></div>
+                     <p className="text-muted text-xs uppercase tracking-[0.2em] font-bold">
+                       How it works
+                     </p>
+                     <div className="h-[1px] w-12 bg-line"></div>
+                  </div>
 
-                          {/* Arrow connector for desktop (except last item) */}
-                          {idx !== steps.length - 1 && (
-                            <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-line bg-background rounded-full p-1">
-                              <ArrowRight size={14} />
-                            </div>
-                          )}
+                  {/* The Grid: 2x2 on desktop, but small cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {steps.map((step, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-4 p-4 rounded-2xl border border-line bg-background/50 hover:bg-secondary/20 hover:border-main/20 transition-all duration-300 text-left group"
+                      >
+                        {/* Smaller Icon Container */}
+                        <div className="shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-main group-hover:scale-105 group-hover:bg-main group-hover:text-background transition-all">
+                          <step.icon size={20} strokeWidth={2} />
                         </div>
-                      ))}
-                    </div>
+                        
+                        {/* Text Side-by-Side */}
+                        <div className="flex flex-col">
+                          <h3 className="font-bold text-sm text-main">{step.title}</h3>
+                          <p className="text-muted text-xs leading-tight mt-0.5">{step.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </motion.div>
               </motion.div>
