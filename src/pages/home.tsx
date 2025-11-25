@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import CountUp from "react-countup";
 import { 
   Loader, 
@@ -7,7 +6,8 @@ import {
   Smartphone, 
   ShieldCheck, 
   Globe, 
-  Phone
+  Phone,
+  Zap
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import api from "@/api/axios";
@@ -32,13 +32,15 @@ export default function Home() {
     checkServices();
   }, []);
 
-  const handleSearch = () => {
-    if (!searchQuery) {
-      toast.error("Please enter a service name first");
-      return;
+  const handleGetStarted = () => {
+    // No validation needed. Just go to signup.
+    // We pass the search query just in case you want to use it on the signup page, 
+    // but it's completely optional.
+    if (searchQuery) {
+      window.location.href = "/signup?service=" + searchQuery;
+    } else {
+      window.location.href = "/signup";
     }
-    toast.success(`Searching numbers for ${searchQuery}...`);
-    window.location.href = "/dashboard?service=" + searchQuery;
   };
 
   const steps = [
@@ -69,12 +71,13 @@ export default function Home() {
       <div className="relative z-10 min-h-[100dvh] flex flex-col overflow-x-hidden font-sans text-main">
         {/* Header */}
         <header className="w-full p-6 md:p-8 flex justify-between items-center max-w-7xl mx-auto z-20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-main text-background rounded-xl">
-               <Phone className="w-6 h-6 md:w-7 md:h-7" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-main">
-              VirtuNum
+          <div className="flex items-center gap-2">
+             {/* Updated Logo to match Dashboard style */}
+             <div className="w-8 h-8 bg-gradient-to-r from-violet-900 to-pink-400 rounded-lg flex items-center justify-center text-white">
+               <Zap size={18} fill="currentColor" />
+             </div>
+            <span className="text-xl font-bold tracking-tight text-main font-jaro">
+              SWIFT
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -87,7 +90,7 @@ export default function Home() {
             {isLoading ? (
               <div className="center gap-3 text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <div className="relative">
-                  <Loader size={28} className="animate-spin text-main" />
+                  <Loader size={28} className="animate-spin text-primary" />
                 </div>
               </div>
             ) : (
@@ -152,15 +155,16 @@ export default function Home() {
                         placeholder="WhatsApp, Telegram..." 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full h-14 pl-[90px] pr-4 rounded-2xl bg-background border-2 border-line focus:border-main focus:ring-0 text-lg font-medium placeholder:text-muted/50 transition-all"
+                        className="w-full h-14 pl-[90px] pr-4 rounded-2xl bg-background border-2 border-line focus:border-primary focus:ring-0 text-lg font-medium placeholder:text-muted/50 transition-all"
                       />
                     </div>
+                    {/* Changed to btn-primary to use your Orange/Primary theme */}
                     <ButtonWithLoader
                       loading={false}
                       initialText="Get Number"
                       loadingText=""
-                      onClick={handleSearch}
-                      className="h-14 px-8 rounded-2xl text-lg font-bold bg-main text-background hover:bg-main/90 transition-all w-full sm:w-auto min-w-[140px] shadow-xl hover:translate-y-[-2px] hover:shadow-2xl"
+                      onClick={handleGetStarted}
+                      className="h-14 px-8 rounded-2xl text-lg font-bold btn-primary w-full sm:w-auto min-w-[160px] shadow-xl hover:translate-y-[-2px] hover:shadow-2xl"
                     />
                   </motion.div>
                 </div>
@@ -172,7 +176,7 @@ export default function Home() {
                   transition={{ delay: 1.3 }}
                   className="relative"
                 >
-                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-blue-500/5 via-transparent to-green-500/5 blur-3xl rounded-full -z-10" />
+                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-primary/5 via-transparent to-pink-500/5 blur-3xl rounded-full -z-10" />
 
                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto px-4">
                       {/* Fake Message Card 1 */}
@@ -189,7 +193,7 @@ export default function Home() {
                       </div>
 
                       {/* Fake Message Card 2 */}
-                      <div className="p-6 rounded-3xl bg-main text-background border border-main text-left shadow-xl scale-105 z-10">
+                      <div className="p-6 rounded-3xl bg-primary text-white border border-primary text-left shadow-xl scale-105 z-10">
                         <div className="flex justify-between items-start mb-4">
                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
                             <ShieldCheck size={20} />
@@ -216,7 +220,7 @@ export default function Home() {
                    </div>
                 </motion.div>
 
-                {/* REDESIGNED: How it Works (Compact Horizontal Cards) */}
+                {/* How it Works */}
                 <motion.div
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -232,15 +236,15 @@ export default function Home() {
                      <div className="h-[1px] w-12 bg-line"></div>
                   </div>
 
-                  {/* The Grid: 2x2 on desktop, but small cards */}
+                  {/* The Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {steps.map((step, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-4 p-4 rounded-2xl border border-line bg-background/50 hover:bg-secondary/20 hover:border-main/20 transition-all duration-300 text-left group"
+                        className="flex items-center gap-4 p-4 rounded-2xl border border-line bg-background/50 hover:bg-secondary hover:border-primary/20 transition-all duration-300 text-left group"
                       >
-                        {/* Smaller Icon Container */}
-                        <div className="shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-main group-hover:scale-105 group-hover:bg-main group-hover:text-background transition-all">
+                        {/* Icon Container */}
+                        <div className="shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-main group-hover:scale-105 group-hover:bg-primary group-hover:text-white transition-all">
                           <step.icon size={20} strokeWidth={2} />
                         </div>
                         
