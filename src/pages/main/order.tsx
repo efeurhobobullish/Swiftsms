@@ -3,8 +3,7 @@ import {
   ChevronDown,
   Search,
   CheckCircle2,
-  Copy,
-  Loader2
+  Copy
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
