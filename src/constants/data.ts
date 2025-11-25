@@ -1,8 +1,8 @@
 import { 
   MessageCircle, Send, Instagram, Facebook, Wallet, Car, 
   Twitter, Youtube, Twitch, Linkedin, Github, Mail, 
-  ShoppingCart, Music, Play, Video, MapPin, Search, 
-  Globe, Smartphone, Coffee, Gamepad2, Ghost, Lock
+  ShoppingCart, Music, Play, Video, MapPin, 
+  Globe, Gamepad2, Ghost, Lock
 } from "lucide-react";
 
 export const ALL_COUNTRIES = [
