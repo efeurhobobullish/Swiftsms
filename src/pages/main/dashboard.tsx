@@ -14,8 +14,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/layouts/BottomNav";
-import { ModeToggle, ButtonWithLoader } from "@/components/ui";
-import WalletCard from "@/components/WalletCard";
+import { ModeToggle, ButtonWithLoader, WalletCard } from "@/components/ui";
 
 import { ALL_COUNTRIES, ALL_SERVICES } from "@/constants/data";
 import type { Country, Service } from "@/constants/data";
