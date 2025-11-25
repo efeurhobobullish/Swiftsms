@@ -36,21 +36,22 @@ const BottomNav = () => {
   return (
     <>
       {/* Main floating bar */}
-      <div className="bg-primary text-primary-foreground p-4 rounded-full fixed bottom-6 left-1/2 -translate-x-1/2 z-50 shadow-xl min-w-[320px]">
+      {/* used bg-primary because in your css primary is the inverse of background */}
+      <div className="bg-primary text-background p-3 rounded-full fixed bottom-6 left-1/2 -translate-x-1/2 z-50 shadow-2xl min-w-[320px]">
         
         {/* The List with a gap in the middle for the button */}
-        <ul className="flex items-center justify-between gap-16 px-2">
+        <ul className="flex items-center justify-between gap-16 px-4">
           {firstTwo.map((item) => (
             <li key={item.name}>
               <NavLink
                 to={item.link}
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center gap-2 text-sm font-bold bg-primary-foreground/20 text-primary-foreground rounded-full px-4 py-2 border border-primary-foreground/10 transition-all"
-                    : "flex items-center gap-2 text-sm font-medium text-primary-foreground/70 rounded-full px-4 py-2 hover:bg-primary-foreground/10 transition-all"
+                    ? "flex items-center gap-2 text-xs font-bold bg-background/20 text-background rounded-full px-4 py-2.5 border border-background/10 transition-all"
+                    : "flex items-center gap-2 text-xs font-medium text-background/60 rounded-full px-4 py-2.5 hover:bg-background/10 transition-all"
                 }
               >
-                <item.icon size={20} />
+                <item.icon size={18} />
                 <span>{item.name}</span>
               </NavLink>
             </li>
@@ -58,10 +59,11 @@ const BottomNav = () => {
         </ul>
 
         {/* The Floating Toggle Button */}
+        {/* Border-background ensures it blends with the page background behind the bar */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle menu"
-          className="absolute border-[6px] border-background -top-6 left-1/2 -translate-x-1/2 bg-background text-primary h-16 w-16 flex items-center justify-center rounded-full shadow-lg hover:scale-105 transition-transform"
+          className="absolute border-[6px] border-background -top-6 left-1/2 -translate-x-1/2 bg-background text-main h-16 w-16 flex items-center justify-center rounded-full shadow-xl hover:scale-105 transition-transform"
         >
           {isOpen ? <X size={24} /> : <LayoutGrid size={24} />}
         </button>
@@ -85,7 +87,7 @@ const BottomNav = () => {
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
-              className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] md:w-[480px] bg-card text-card-foreground border border-border p-4 rounded-3xl z-50 shadow-2xl"
+              className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] md:w-[480px] bg-card border border-line p-4 rounded-3xl z-50 shadow-2xl"
             >
               <ul className="grid grid-cols-1 gap-2">
                 {lastThree.map((item) => (
@@ -95,8 +97,8 @@ const BottomNav = () => {
                       onClick={() => setIsOpen(false)}
                       className={({ isActive }) =>
                         isActive
-                          ? "flex items-center gap-3 text-sm font-bold bg-primary text-primary-foreground rounded-xl p-4 transition-all"
-                          : "flex items-center gap-3 text-sm font-medium text-muted-foreground rounded-xl hover:text-foreground hover:bg-secondary border border-transparent p-4 transition-all"
+                          ? "flex items-center gap-3 text-sm font-bold bg-main text-background rounded-xl p-4 transition-all"
+                          : "flex items-center gap-3 text-sm font-medium text-muted hover:text-main hover:bg-secondary border border-transparent p-4 transition-all rounded-xl"
                       }
                     >
                       <item.icon size={22} />
