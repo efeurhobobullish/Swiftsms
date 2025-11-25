@@ -5,29 +5,29 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Light Mode: Clean White & Royal Blue */
+  /* Light Mode: Clean White & Vibrant Orange */
   --background: #ffffff;
-  --secondary: #eff6ff;  /* A very light blue (Blue-50) instead of grey */
+  --secondary: #fff7ed;  /* Orange-50 (Warm tint) */
   --foreground: #ffffff; 
-  --main: #0f172a;       /* Deep Navy (Slate-900) instead of Black - softer on eyes */
-  --muted: #64748b;      /* Blue-Grey (Slate-500) */
-  --primary: #2563eb;    /* Vibrant Royal Blue (Blue-600) */
-  --line: #dbeafe;       /* Light Blue border (Blue-100) */
+  --main: #1c1917;       /* Stone-900 (Warm Black) - softer than pure black */
+  --muted: #78716c;      /* Stone-500 (Warm Grey) */
+  --primary: #ea580c;    /* Orange-600 (Vibrant Orange) */
+  --line: #ffedd5;       /* Orange-100 (Light Orange border) */
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #1c1917;
 }
 
 .dark {
-  /* Dark Mode: Deep Navy/Slate */
-  --background: #020617; /* Deepest Navy (Slate-950) instead of #000000 */
-  --foreground: #0f172a; 
-  --main: #f8fafc;       /* Ice White (Slate-50) */
-  --secondary: #1e293b;  /* Dark Slate Blue (Slate-800) */
-  --muted: #94a3b8;      /* Lighter Slate (Slate-400) */
-  --line: #1e293b;       /* Dark Blue Border */
-  --primary: #3b82f6;    /* Bright Blue (Blue-500) for contrast */
-  --card: #0f172a;
-  --card-foreground: #f8fafc;
+  /* Dark Mode: Deep Stone/Black */
+  --background: #0c0a09; /* Stone-950 (Deepest Warm Black) */
+  --foreground: #1c1917; 
+  --main: #fafaf9;       /* Stone-50 (Warm White) */
+  --secondary: #1c1917;  /* Stone-900 (Dark Warm Grey) */
+  --muted: #a8a29e;      /* Stone-400 (Light Warm Grey) */
+  --line: #292524;       /* Stone-800 (Dark Border) */
+  --primary: #f97316;    /* Orange-500 (Bright Orange) for contrast */
+  --card: #0c0a09;
+  --card-foreground: #fafaf9;
 }
 
 @theme inline {
@@ -64,7 +64,7 @@ body {
   @apply flex items-center justify-center;
 }
 
-/* Custom scrollbar - Updated to match Blue theme */
+/* Custom scrollbar - Updated to match Orange theme */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -75,15 +75,15 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--line); /* Uses the border color */
+  background: var(--line); 
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); /* Blue on hover */
+  background: var(--primary); /* Orange on hover */
 }
 
 /* button css */
 .btn-primary {
-  @apply bg-primary text-white font-medium hover:opacity-90 active:scale-95 transition-all shadow-md shadow-blue-500/20;
+  @apply bg-primary text-white font-medium hover:opacity-90 active:scale-95 transition-all shadow-md shadow-orange-500/20;
 }
