@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 @import "tailwindcss";
 
@@ -30,8 +30,8 @@
   --card-foreground: #ffffff;
 }
 
-@theme {
-  --font-sans: "Space Grotesk", sans-serif;
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-secondary: var(--secondary);
@@ -43,13 +43,12 @@
   --color-card-foreground: var(--card-foreground);
 }
 
-* {
+*{
   @apply outline-none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 body {
-  @apply bg-background text-main font-sans antialiased;
+ @apply bg-background text-main font-sans antialiased;
 }
 
 /* Utilities */
@@ -63,28 +62,6 @@ body {
 
 .center {
   @apply flex items-center justify-center;
-}
-
-/* Form styles */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: var(--main);
-  transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 20px 20px var(--secondary);
-}
-
-input:focus {
-  box-shadow: 0 0 0 3px rgb(from var(--main) r g b / 0.1);
-  border-color: var(--main);
-}
-
-/* Button loading states */
-.btn-loading {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 /* Custom scrollbar */
@@ -106,18 +83,7 @@ input:focus {
   background: var(--main);
 }
 
-/* Button CSS */
+/* button css */
 .btn-primary {
-  background-color: var(--main);
-  color: var(--background);
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  background-color: color-mix(in srgb, var(--main) 90%, transparent);
-}
-
-.btn-primary:active {
-  transform: scale(0.95);
+  @apply bg-main text-background font-medium hover:bg-main/90 active:scale-95 transition-all;
 }
