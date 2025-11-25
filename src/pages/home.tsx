@@ -3,11 +3,15 @@ import { toast } from "sonner";
 import CountUp from "react-countup";
 import { 
   Loader, 
-  MessageCircle, 
-  Share2, 
-  Heart, 
-  Sparkles,
-  Ghost
+  Phone, 
+  Shield, 
+  Globe, 
+  Zap,
+  CheckCircle,
+  MessageCircle,
+  Smartphone,
+  CreditCard,
+  ArrowRight
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import api from "@/api/axios";
@@ -15,17 +19,14 @@ import { Pattern, ButtonWithLoader, ModeToggle } from "@/components/ui";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [username, setUsername] = useState("");
-
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // Simulate connection check
     const checkServices = async () => {
       setIsLoading(true);
       try {
         await api.get("/");
       } catch (error) {
-        // Silent fail or simple log for dev
         console.log("API check finished");
       } finally {
         setIsLoading(false);
@@ -34,37 +35,78 @@ export default function Home() {
     checkServices();
   }, []);
 
-  const handleGetLink = () => {
-    if (!username) {
-      toast.error("Please enter a username first");
+  const handleGetStarted = () => {
+    if (!email) {
+      toast.error("Please enter your email first");
       return;
     }
-    toast.success(`Link created for @${username}!`);
-    // Navigate to signup or dashboard logic here
-    window.location.href = "/signup?user=" + username;
+    toast.success(`Welcome to SwiftPlug! Check your email for next steps.`);
+    window.location.href = "/signup?email=" + email;
   };
+
+  const features = [
+    {
+      icon: Zap,
+      title: "Instant Activation",
+      desc: "Get your virtual number up and running within minutes.",
+    },
+    {
+      icon: Globe,
+      title: "Universal Compatibility",
+      desc: "Works seamlessly with WhatsApp, Google Voice, Telegram, and more.",
+    },
+    {
+      icon: Shield,
+      title: "Secure & Private",
+      desc: "Your privacy is our priority. No personal data required.",
+    },
+    {
+      icon: CreditCard,
+      title: "Affordable Plans",
+      desc: "Flexible pricing that fits your needs and budget.",
+    },
+  ];
 
   const steps = [
     {
-      icon: Ghost,
+      icon: Smartphone,
       title: "1. Create Account",
-      desc: "Claim your unique anonymous link in seconds.",
+      desc: "Sign up and verify your account in seconds.",
     },
     {
-      icon: Share2,
-      title: "2. Share Link",
-      desc: "Post it on your Instagram Story, Snapchat, or Twitter.",
+      icon: CreditCard,
+      title: "2. Top Up Balance",
+      desc: "Add funds to your account securely.",
+    },
+    {
+      icon: Phone,
+      title: "3. Choose Number",
+      desc: "Select your preferred country and service.",
     },
     {
       icon: MessageCircle,
-      title: "3. Get Truths",
-      desc: "Receive honest, anonymous messages from your friends.",
+      title: "4. Receive OTP",
+      desc: "Get verification codes directly in your dashboard.",
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "How to get started with SwiftPlug?",
+      answer: "Simply sign up, top up your account, and choose your virtual number. It takes less than 5 minutes!"
     },
     {
-      icon: Sparkles,
-      title: "4. Reply",
-      desc: "Share the best responses back to your story.",
+      question: "Which platforms are supported?",
+      answer: "We support all major platforms including WhatsApp, Google Voice, Telegram, Facebook, Instagram, and many more."
     },
+    {
+      question: "How do I receive verification codes?",
+      answer: "Once you purchase a number, all incoming SMS and verification codes appear instantly in your dashboard."
+    },
+    {
+      question: "Are the numbers reusable?",
+      answer: "Yes! You can use your virtual number for multiple verifications during the rental period."
+    }
   ];
 
   return (
@@ -74,14 +116,27 @@ export default function Home() {
         <header className="w-full p-6 md:p-8 flex justify-between items-center max-w-7xl mx-auto z-20">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-main text-background rounded-xl">
-               <Ghost className="w-6 h-6 md:w-7 md:h-7" />
+              <Phone className="w-6 h-6 md:w-7 md:h-7" />
             </div>
             <span className="text-xl font-bold tracking-tight text-main">
-              Anonymous
+              SwiftPlug
             </span>
           </div>
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-muted hover:text-main transition-colors">Features</a>
+            <a href="#how-it-works" className="text-muted hover:text-main transition-colors">How it Works</a>
+            <a href="#pricing" className="text-muted hover:text-main transition-colors">Pricing</a>
+            <a href="#faq" className="text-muted hover:text-main transition-colors">FAQ</a>
+          </nav>
           <div className="flex items-center gap-4">
             <ModeToggle />
+            <ButtonWithLoader
+              loading={false}
+              initialText="Get Started"
+              loadingText=""
+              onClick={handleGetStarted}
+              className="h-10 px-6 rounded-xl text-sm font-bold bg-main text-background hover:bg-main/90 transition-all"
+            />
           </div>
         </header>
 
@@ -99,10 +154,10 @@ export default function Home() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 40, opacity: 0 }}
                 transition={{ delay: 0.3 }}
-                className="space-y-16 text-center w-full"
+                className="space-y-20 text-center w-full"
               >
                 {/* Hero Section */}
-                <div className="space-y-8 max-w-3xl mx-auto mt-8 md:mt-0">
+                <div className="space-y-8 max-w-4xl mx-auto mt-8 md:mt-12">
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -114,7 +169,7 @@ export default function Home() {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
                     <span>
-                      <CountUp end={50000} separator="," duration={2.5} />+ messages sent today
+                      <CountUp end={10000} separator="," duration={2.5} />+ numbers activated today
                     </span>
                   </motion.div>
 
@@ -122,137 +177,199 @@ export default function Home() {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.7 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-main leading-[0.9]"
+                    className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-main leading-[1.1]"
                   >
-                    Send me <br/>
-                    <span className="text-muted">Anonymous</span> <br/>
-                    Messages!
+                    Get your virtual
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                      number in minutes
+                    </span>
+                    <span className="text-2xl md:text-3xl block mt-4">🚀</span>
                   </motion.h1>
 
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.9 }}
-                    className="text-muted text-lg md:text-xl max-w-xl mx-auto leading-relaxed"
+                    className="text-muted text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
                   >
-                    Share your unique link and see what your friends 
-                    <span className="text-main font-semibold italic"> really</span> think. 
-                    No names attached.
+                    Empower your online presence with reliable virtual numbers. 
+                    Seamlessly receive verification codes from top platforms like 
+                    WhatsApp, Google Voice, Telegram, and more.
                   </motion.p>
-                  
-                  {/* Interactive Username Input */}
+
+                  {/* Email Input */}
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto w-full pt-4"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto w-full pt-4"
                   >
-                    <div className="relative w-full">
-                      <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-muted font-medium">
-                        anonymous.com/
-                      </div>
-                      <input 
-                        type="text" 
-                        placeholder="username" 
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="w-full h-14 pl-[140px] pr-4 rounded-2xl bg-background border-2 border-line focus:border-main focus:ring-0 text-lg font-medium placeholder:text-muted/50 transition-all"
-                      />
-                    </div>
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full h-14 px-6 rounded-2xl bg-background border-2 border-line focus:border-main focus:ring-0 text-lg font-medium placeholder:text-muted/50 transition-all"
+                    />
                     <ButtonWithLoader
                       loading={false}
-                      initialText="Get Link"
+                      initialText="Get Started"
                       loadingText=""
-                      onClick={handleGetLink}
-                      className="h-14 px-8 rounded-2xl text-lg font-bold bg-main text-background hover:bg-main/90 transition-all w-full sm:w-auto min-w-[140px] shadow-xl hover:translate-y-[-2px] hover:shadow-2xl"
-                    />
+                      onClick={handleGetStarted}
+                      className="h-14 px-8 rounded-2xl text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-background hover:from-blue-700 hover:to-purple-700 transition-all w-full sm:w-auto min-w-[160px] shadow-xl hover:translate-y-[-2px] hover:shadow-2xl flex items-center gap-2"
+                    >
+                      Get Started <ArrowRight size={20} />
+                    </ButtonWithLoader>
                   </motion.div>
                 </div>
 
-                {/* Social Proof / Cards */}
-                <motion.div
+                {/* Features Grid */}
+                <motion.section
+                  id="features"
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1.3 }}
-                  className="relative"
+                  className="pt-16 w-full max-w-6xl mx-auto"
                 >
-                   {/* Decorative elements behind */}
-                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-purple-500/5 via-transparent to-orange-500/5 blur-3xl rounded-full -z-10" />
-
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto px-4">
-                      {/* Fake Message Card 1 */}
-                      <div className="p-6 rounded-3xl bg-background border border-line text-left shadow-sm rotate-[-3deg] hover:rotate-0 transition-transform duration-300">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500">
-                            <Heart size={20} fill="currentColor" />
-                          </div>
-                          <span className="text-xs text-muted font-mono">
-                             <CountUp end={12} duration={2} />m ago
-                          </span>
+                  <p className="text-muted text-sm uppercase tracking-widest mb-4 font-bold">
+                    Why Choose SwiftPlug
+                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-main mb-12">
+                    What SwiftPlug has to offer
+                  </h2>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-col items-center text-center p-6 rounded-2xl border border-line hover:border-main hover:bg-secondary/30 transition-all duration-300 group"
+                      >
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
+                          <feature.icon size={32} strokeWidth={1.5} />
                         </div>
-                        <p className="text-lg font-medium text-main">"I've always had a crush on you... just too shy to say it 🙈"</p>
+                        <h3 className="font-bold text-xl mb-3 text-main">{feature.title}</h3>
+                        <p className="text-muted text-sm leading-relaxed">{feature.desc}</p>
                       </div>
-
-                      {/* Fake Message Card 2 */}
-                      <div className="p-6 rounded-3xl bg-main text-background border border-main text-left shadow-xl scale-105 z-10">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
-                            <Ghost size={20} />
-                          </div>
-                          <span className="text-xs text-white/60 font-mono">
-                            <CountUp end={2} duration={4} />m ago
-                          </span>
-                        </div>
-                        <p className="text-lg font-medium">"Where did you get that hoodie you wore today? It looked fire!"</p>
-                      </div>
-
-                      {/* Fake Message Card 3 */}
-                      <div className="p-6 rounded-3xl bg-background border border-line text-left shadow-sm rotate-[3deg] hover:rotate-0 transition-transform duration-300">
-                         <div className="flex justify-between items-start mb-4">
-                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
-                            <MessageCircle size={20} />
-                          </div>
-                          <span className="text-xs text-muted font-mono">
-                            <CountUp end={1} duration={3} />h ago
-                          </span>
-                        </div>
-                        <p className="text-lg font-medium text-main">"Are you going to the party this weekend?"</p>
-                      </div>
-                   </div>
-                </motion.div>
+                    ))}
+                  </div>
+                </motion.section>
 
                 {/* How it Works */}
-                <motion.div
+                <motion.section
+                  id="how-it-works"
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1.5 }}
                   className="pt-16 w-full max-w-6xl mx-auto"
                 >
-                  <p className="text-muted text-sm uppercase tracking-widest mb-10 font-bold">
+                  <p className="text-muted text-sm uppercase tracking-widest mb-4 font-bold">
                     How it works
                   </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-main mb-12">
+                    Follow these simple steps
+                  </h2>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {steps.map((step, idx) => (
                       <div
                         key={idx}
-                        className="flex flex-col items-center p-6 rounded-2xl border border-transparent hover:border-line hover:bg-secondary/30 transition-all duration-300"
+                        className="flex flex-col items-center text-center p-6 rounded-2xl border border-transparent hover:border-line hover:bg-secondary/30 transition-all duration-300"
                       >
                         <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-6 text-main">
                           <step.icon size={32} strokeWidth={1.5} />
                         </div>
-                        <h3 className="font-bold text-xl mb-2 text-main">{step.title}</h3>
-                        <p className="text-muted text-sm leading-relaxed max-w-[200px]">{step.desc}</p>
+                        <h3 className="font-bold text-xl mb-3 text-main">{step.title}</h3>
+                        <p className="text-muted text-sm leading-relaxed">{step.desc}</p>
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </motion.section>
+
+                {/* FAQ Section */}
+                <motion.section
+                  id="faq"
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.7 }}
+                  className="pt-16 w-full max-w-4xl mx-auto"
+                >
+                  <p className="text-muted text-sm uppercase tracking-widest mb-4 font-bold">
+                    FAQ
+                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-main mb-12">
+                    Frequently asked questions
+                  </h2>
+                  
+                  <div className="space-y-4 text-left">
+                    {faqs.map((faq, idx) => (
+                      <div
+                        key={idx}
+                        className="p-6 rounded-2xl border border-line bg-secondary/30 hover:bg-secondary/50 transition-all duration-300"
+                      >
+                        <h3 className="font-bold text-lg mb-2 text-main flex items-center gap-3">
+                          <CheckCircle size={20} className="text-green-500" />
+                          {faq.question}
+                        </h3>
+                        <p className="text-muted leading-relaxed">{faq.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.section>
+
+                {/* CTA Section */}
+                <motion.section
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.9 }}
+                  className="pt-16 w-full max-w-2xl mx-auto text-center"
+                >
+                  <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                      Ready to get your virtual number?
+                    </h2>
+                    <p className="text-blue-100 mb-6">
+                      Join thousands of users who trust SwiftPlug for their verification needs.
+                    </p>
+                    <ButtonWithLoader
+                      loading={false}
+                      initialText="Get Started Now"
+                      loadingText=""
+                      onClick={handleGetStarted}
+                      className="h-12 px-8 rounded-xl text-lg font-bold bg-white text-blue-600 hover:bg-blue-50 transition-all shadow-lg hover:translate-y-[-2px] hover:shadow-xl"
+                    />
+                  </div>
+                </motion.section>
               </motion.div>
             )}
           </AnimatePresence>
         </main>
+
+        {/* Footer */}
+        <footer className="w-full border-t border-line py-8 mt-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="flex items-center gap-3 mb-4 md:mb-0">
+                <div className="w-8 h-8 flex items-center justify-center bg-main text-background rounded-lg">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <span className="text-lg font-bold text-main">SwiftPlug</span>
+              </div>
+              
+              <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-sm">
+                <a href="#" className="text-muted hover:text-main transition-colors">Home</a>
+                <a href="#features" className="text-muted hover:text-main transition-colors">Features</a>
+                <a href="#how-it-works" className="text-muted hover:text-main transition-colors">How it Works</a>
+                <a href="#faq" className="text-muted hover:text-main transition-colors">FAQ</a>
+                <a href="#" className="text-muted hover:text-main transition-colors">Contact</a>
+              </div>
+              
+              <div className="mt-4 md:mt-0 text-sm text-muted">
+                © 2025 SwiftPlug. All rights reserved.
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </Pattern>
   );
 }
-
-
