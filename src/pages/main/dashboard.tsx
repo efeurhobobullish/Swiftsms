@@ -98,37 +98,35 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-main font-sans pb-32">
+    <div className="min-h-screen bg-background text-main font-sans pb-20">
       <Header />
 
-      {/* Reduced padding to account for header height more precisely */}
-      <main className="main pt-20 space-y-6">
-        {/* Wallet Card with margin top */}
+      <main className="main pt-16 space-y-4">
+        {/* Wallet Card */}
         <motion.div 
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="mt-4"
         >
           <WalletCard />
         </motion.div>
 
-        {/* Rest of your content remains the same */}
-        <div className="bg-card border border-line rounded-3xl p-5 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-card border border-line shadow-sm center">
-              <Smartphone size={22} />
+        {/* Stats Section - Smaller */}
+        <div className="bg-card border border-line rounded-2xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-card border border-line shadow-sm center">
+              <Smartphone size={18} />
             </div>
             <div>
               <p className="text-xs text-muted font-medium">Total Numbers</p>
-              <h3 className="text-2xl font-bold text-main leading-tight">{totalNumbers}</h3>
+              <h3 className="text-xl font-bold text-main leading-tight">{totalNumbers}</h3>
             </div>
           </div>
-          <button className="bg-card border border-line px-4 py-2 rounded-full text-xs hover:border-primary transition-colors">
+          <button className="bg-card border border-line px-3 py-1.5 rounded-full text-xs hover:border-primary transition-colors">
             History
           </button>
         </div>
 
-        {/* Active Order Section */}
+        {/* Active Order Section - Smaller */}
         <AnimatePresence>
           {activeOrder && (
             <motion.div
@@ -137,36 +135,36 @@ export default function Dashboard() {
               exit={{ height: 0, opacity: 0 }}
               className="overflow-hidden"
             >
-              <div className="bg-card border border-line rounded-3xl p-6 relative mb-8">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-card border border-line shadow-sm center">
-                      <activeOrder.service.icon size={24} className={activeOrder.service.color} />
+              <div className="bg-card border border-line rounded-2xl p-4 relative mb-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-xl bg-card border border-line shadow-sm center">
+                      <activeOrder.service.icon size={20} className={activeOrder.service.color} />
                     </div>
                     <div>
                       <p className="text-muted text-xs font-medium uppercase tracking-wider">Active Number</p>
-                      <p className="font-bold text-lg">{activeOrder.service.name}</p>
+                      <p className="font-bold text-base">{activeOrder.service.name}</p>
                     </div>
                   </div>
-                  <div className="bg-card px-3 py-1 rounded-lg text-xs font-mono flex items-center gap-2 border border-line">
-                    <Clock size={12} /> 14:32
+                  <div className="bg-card px-2 py-1 rounded text-xs font-mono flex items-center gap-1 border border-line">
+                    <Clock size={10} /> 14:32
                   </div>
                 </div>
 
-                <div className="bg-card border border-line border-dashed rounded-2xl p-4 flex items-center justify-between mb-4">
-                  <span className="text-2xl font-mono font-bold tracking-wider">{activeOrder.number}</span>
+                <div className="bg-card border border-line border-dashed rounded-xl p-3 flex items-center justify-between mb-3">
+                  <span className="text-lg font-mono font-bold tracking-wide">{activeOrder.number}</span>
                   <button 
                     onClick={() => copyToClipboard(activeOrder.number)}
                     className="hover:opacity-70 transition-opacity"
                   >
-                    <Copy size={18} className="text-muted" />
+                    <Copy size={16} className="text-muted" />
                   </button>
                 </div>
 
-                <div className="center min-h-[60px]">
+                <div className="center min-h-[50px]">
                   {activeOrder.status === "waiting" ? (
-                    <div className="flex items-center gap-3 animate-pulse text-primary">
-                      <Loader2 size={20} className="animate-spin" />
+                    <div className="flex items-center gap-2 animate-pulse text-primary">
+                      <Loader2 size={16} className="animate-spin" />
                       <span className="font-bold text-sm">Waiting for SMS...</span>
                     </div>
                   ) : (
@@ -178,15 +176,15 @@ export default function Dashboard() {
                       <p className="text-muted text-xs uppercase font-bold tracking-widest mb-1">
                         Your Code
                       </p>
-                      <div className="flex items-center gap-4">
-                        <span className="text-3xl font-mono font-bold text-primary">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl font-mono font-bold text-primary">
                           {activeOrder.smsCode}
                         </span>
                         <button 
                           onClick={() => copyToClipboard(activeOrder.smsCode!)}
                           className="hover:opacity-70 transition-opacity"
                         >
-                          <Copy size={16} />
+                          <Copy size={14} />
                         </button>
                       </div>
                     </motion.div>
@@ -197,16 +195,16 @@ export default function Dashboard() {
           )}
         </AnimatePresence>
 
-        {/* Order Form */}
-        <div className="space-y-4">
+        {/* Order Form - Smaller */}
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-lg">New Order</h3>
-            <span className="text-xs font-medium text-green-500 bg-green-500/10 px-2 py-1 rounded-md border border-green-500/20">
+            <h3 className="font-bold text-base">New Order</h3>
+            <span className="text-xs font-medium text-green-500 bg-green-500/10 px-2 py-1 rounded border border-green-500/20">
               Server Online
             </span>
           </div>
 
-          <div className="bg-secondary border border-line rounded-3xl p-1 relative z-20">
+          <div className="bg-secondary border border-line rounded-2xl p-1 relative z-20">
             {/* Country Selector */}
             <div className="relative">
               <button 
@@ -215,19 +213,19 @@ export default function Dashboard() {
                   setIsServiceOpen(false);
                   setCountrySearch("");
                 }}
-                className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-secondary/50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-card border border-line center text-xl">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-card border border-line center text-lg">
                     {selectedCountry.flag}
                   </div>
                   <div>
                     <p className="text-xs text-muted font-medium mb-0.5">Select Country</p>
-                    <p className="font-bold text-main">{selectedCountry.name}</p>
+                    <p className="font-bold text-sm">{selectedCountry.name}</p>
                   </div>
                 </div>
                 <ChevronDown 
-                  size={20} 
+                  size={16} 
                   className={`text-muted transition-transform ${isCountryOpen ? 'rotate-180' : ''}`} 
                 />
               </button>
@@ -238,19 +236,19 @@ export default function Dashboard() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden border-t border-line mx-4"
+                    className="overflow-hidden border-t border-line mx-3"
                   >
-                    <div className="relative mt-3 mb-2">
-                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"/>
+                    <div className="relative mt-2 mb-1">
+                      <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted"/>
                       <input 
                         type="text" 
                         placeholder="Search country..." 
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
-                        className="w-full bg-background border border-line rounded-xl pl-9 pr-4 py-2 text-sm focus:border-primary transition-colors" 
+                        className="w-full bg-background border border-line rounded-lg pl-8 pr-3 py-1.5 text-sm focus:border-primary transition-colors" 
                       />
                     </div>
-                    <div className="py-2 space-y-1 max-h-[250px] overflow-y-auto custom-scrollbar">
+                    <div className="py-1 space-y-1 max-h-[200px] overflow-y-auto custom-scrollbar">
                       {filteredCountries.map((country: Country) => (
                         <button
                           key={country.id}
@@ -258,18 +256,18 @@ export default function Dashboard() {
                             setSelectedCountry(country); 
                             setIsCountryOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between p-3 rounded-xl text-sm transition-colors ${
+                          className={`w-full flex items-center justify-between p-2 rounded-lg text-sm transition-colors ${
                             selectedCountry.id === country.id 
                               ? 'bg-card text-main font-bold shadow-sm' 
                               : 'text-muted hover:bg-secondary'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg">{country.flag}</span>
-                            <span>{country.name}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{country.flag}</span>
+                            <span className="text-xs">{country.name}</span>
                           </div>
                           {selectedCountry.id === country.id && (
-                            <CheckCircle2 size={16} className="text-primary" />
+                            <CheckCircle2 size={14} className="text-primary" />
                           )}
                         </button>
                       ))}
@@ -279,7 +277,7 @@ export default function Dashboard() {
               </AnimatePresence>
             </div>
 
-            <div className="h-[1px] bg-line mx-4 my-1" />
+            <div className="h-[1px] bg-line mx-3 my-1" />
 
             {/* Service Selector */}
             <div className="relative">
@@ -289,19 +287,19 @@ export default function Dashboard() {
                   setIsCountryOpen(false);
                   setServiceSearch("");
                 }}
-                className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-secondary/50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-card border border-line center">
-                    <selectedService.icon size={20} className={selectedService.color} />
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-card border border-line center">
+                    <selectedService.icon size={16} className={selectedService.color} />
                   </div>
                   <div>
                     <p className="text-xs text-muted font-medium mb-0.5">Select Service</p>
-                    <p className="font-bold text-main">{selectedService.name}</p>
+                    <p className="font-bold text-sm">{selectedService.name}</p>
                   </div>
                 </div>
                 <ChevronDown 
-                  size={20} 
+                  size={16} 
                   className={`text-muted transition-transform ${isServiceOpen ? 'rotate-180' : ''}`} 
                 />
               </button>
@@ -312,19 +310,19 @@ export default function Dashboard() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden border-t border-line mx-4"
+                    className="overflow-hidden border-t border-line mx-3"
                   >
-                    <div className="relative mt-3 mb-2">
-                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"/>
+                    <div className="relative mt-2 mb-1">
+                      <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted"/>
                       <input 
                         type="text" 
                         placeholder="Search service..." 
                         value={serviceSearch}
                         onChange={(e) => setServiceSearch(e.target.value)}
-                        className="w-full bg-background border border-line rounded-xl pl-9 pr-4 py-2 text-sm focus:border-primary transition-colors" 
+                        className="w-full bg-background border border-line rounded-lg pl-8 pr-3 py-1.5 text-sm focus:border-primary transition-colors" 
                       />
                     </div>
-                    <div className="py-2 space-y-1 max-h-[250px] overflow-y-auto custom-scrollbar">
+                    <div className="py-1 space-y-1 max-h-[200px] overflow-y-auto custom-scrollbar">
                       {filteredServices.map((service: Service) => (
                         <button
                           key={service.id}
@@ -332,15 +330,15 @@ export default function Dashboard() {
                             setSelectedService(service); 
                             setIsServiceOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between p-3 rounded-xl text-sm transition-colors ${
+                          className={`w-full flex items-center justify-between p-2 rounded-lg text-sm transition-colors ${
                             selectedService.id === service.id 
                               ? 'bg-card text-main font-bold shadow-sm' 
                               : 'text-muted hover:bg-secondary'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <service.icon size={16} className={service.color} />
-                            <span>{service.name}</span>
+                          <div className="flex items-center gap-2">
+                            <service.icon size={14} className={service.color} />
+                            <span className="text-xs">{service.name}</span>
                           </div>
                           <span className="text-xs font-mono">₦{service.price}</span>
                         </button>
@@ -352,17 +350,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Purchase Section */}
-          <div className="bg-secondary border border-line rounded-3xl p-4 flex items-center justify-between">
+          {/* Purchase Section - Smaller */}
+          <div className="bg-secondary border border-line rounded-2xl p-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted font-medium">Total Cost</p>
-              <p className="text-2xl font-bold text-main">₦{selectedService.price.toFixed(2)}</p>
+              <p className="text-xl font-bold text-main">₦{selectedService.price.toFixed(2)}</p>
             </div>
             <ButtonWithLoader 
               loading={isLoading}
               initialText="Get Number"
               loadingText="Generating..."
-              className="btn-primary px-8 py-3 rounded-xl font-bold shadow-lg shadow-primary/20"
+              className="btn-primary px-6 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/20 text-sm"
               onClick={handlePurchase}
             />
           </div>
