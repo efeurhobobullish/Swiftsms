@@ -99,10 +99,6 @@ export default function Dashboard() {
     toast.success("Copied to clipboard");
   };
 
-  const closeAllDropdowns = () => {
-    setIsCountryOpen(false);
-    setIsServiceOpen(false);
-  };
 
   return (
     <div className="min-h-screen bg-background text-main font-sans pb-32">
